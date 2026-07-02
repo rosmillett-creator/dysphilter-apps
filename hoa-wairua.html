@@ -62,67 +62,9 @@
     --glow: rgba(168, 155, 200, 0.28);
   }
 
-  /* Light theme — warm cream with violet accents */
-  :root.light-theme {
-    --bg: #F5F2EE;
-    --bg-soft: #EEEAE4;
-    --card: #FAF7F3;
-    --sage: #7A8B73;
-    --sage-light: #A5B89E;
-    --sage-dark: #5C6B56;
-    --violet: #7B6B9E;
-    --violet-light: #A89BC8;
-    --violet-dark: #5B4B7E;
-    --amber: #B89B5E;
-    --amber-soft: #C9B88E;
-    --cream: #3D3A42;
-    --text: #3D3A42;
-    --muted: #6A6470;
-    --border: #D8D4CE;
-    --glow: rgba(123, 107, 158, 0.12);
-  }
-
   /* Light + High stimulation — brighter violet on cream */
-  :root.light-theme.high-stim {
-    --bg: #F0EDF8;
-    --bg-soft: #E8E4F2;
-    --card: #F6F3FC;
-    --sage: #6B8B5E;
-    --sage-light: #8BAB7E;
-    --sage-dark: #4B6B3E;
-    --violet: #6B4B9E;
-    --violet-light: #8B6BC8;
-    --violet-dark: #4B2B7E;
-    --amber: #C9A55E;
-    --amber-soft: #D9B58E;
-    --cream: #2D2A42;
-    --text: #2D2A42;
-    --muted: #5A5470;
-    --border: #C8C4D8;
-    --glow: rgba(107, 75, 158, 0.22);
-  }
-
-  /* Dark + High stimulation — brighter violet on dark */
-  :root.high-stim:not(.light-theme) {
-    --bg: #1A1620;
-    --bg-soft: #221E2A;
-    --card: #2C2836;
-    --sage: #A0C08C;
-    --sage-light: #C0E0AC;
-    --sage-dark: #80A06C;
-    --violet: #B89BD8;
-    --violet-light: #D8BBF4;
-    --violet-dark: #987BB8;
-    --amber: #E8C568;
-    --amber-soft: #F0D590;
-    --cream: #E8E4F0;
-    --text: #E8E4F0;
-    --muted: #A0A0B0;
-    --border: #3E3A4E;
-    --glow: rgba(184, 155, 216, 0.32);
-  }
-
-  /* High stim animated progress dots */
+    /* Dark + High stimulation — brighter violet on dark */
+    /* High stim animated progress dots */
   .high-stim .step-dot.active {
     animation: dotPulse 1s ease-in-out infinite;
   }
@@ -1402,12 +1344,6 @@ function setSensory(level, btn) {
     document.documentElement.classList.add('high-stim');
   } else {
     document.documentElement.classList.remove('high-stim');
-  }
-  savePrefs();
-}
-
- else {
-    document.documentElement.classList.remove('light-theme');
   }
   savePrefs();
 }
