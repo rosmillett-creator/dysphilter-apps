@@ -267,6 +267,7 @@
 </style>
 </head>
 <body>
+<div id="dim-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;pointer-events:none;z-index:9999;opacity:0;transition:opacity 0.3s ease;"></div>
 
 <!-- ════════════════════════════════════════════════════════════════
      SCREEN: WELCOME / HOME
@@ -632,7 +633,7 @@
     </div>
     <div class="pref-group">
       <label>Screen brightness</label>
-      <input type="range" class="dial" id="brightness-dial" min="0" max="3" value="1" step="1" oninput="setBrightness(this.value)">
+      <input type="range" class="dial" id="brightness-dial" min="0" max="3" value="3" step="1" oninput="setBrightness(this.value)">
       <div class="dial-labels">
         <span>Very dim</span><span>Dim</span><span>Soft</span><span>Gentle</span>
       </div>
@@ -692,7 +693,7 @@
 
 let state = {
   screen: 'welcome', companionMode: false, voiceOn: true, voiceSpeed: 0.85,
-  sensory: 'low', brightness: 1, selectedArea: null, currentRoutine: null,
+  sensory: 'low', brightness: 3, selectedArea: null, currentRoutine: null,
   currentStep: 0, routineTimer: null, routinePaused: false,
   checkInBefore: null, checkInAfter: null
 };
