@@ -1,0 +1,16 @@
+{
+  "name": "Enef Car — Gentle Calm",
+  "short_name": "Enef Car",
+  "description": "Companion reflexology for self-regulation and co-regulation. Hands, ears, face, and head routines wherever you are.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2EFE8",
+  "theme_color": "#F2EFE8",
+  "icons": [
+    { "src": "icons/enef-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/enef-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/enef-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
