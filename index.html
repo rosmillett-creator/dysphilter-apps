@@ -89,6 +89,41 @@
     --glow: rgba(123, 196, 104, 0.25);
   }
 
+  /* Mid sage theme — soft medium sage green */
+  :root.mid-sage {
+    --bg: #8B9D7E;
+    --bg-soft: #7D8F70;
+    --card: #95A88A;
+    --sage: #3D4F36;
+    --sage-light: #5B7050;
+    --sage-dark: #2A3A24;
+    --amber: #5B6B50;
+    --amber-soft: #7B8C70;
+    --cream: #1A1F15;
+    --text: #1A1F15;
+    --muted: #2E3324;
+    --border: #7A8B6E;
+    --glow: rgba(60, 80, 54, 0.15);
+  }
+
+  /* Mid sage + high stim */
+  :root.mid-sage.high-stim {
+    --bg: #8B9D7E;
+    --bg-soft: #7D8F70;
+    --card: #95A88A;
+    --sage: #2D5B22;
+    --sage-light: #4A8B38;
+    --sage-dark: #1A3D12;
+    --amber: #D4A537;
+    --amber-soft: #E8C568;
+    --cream: #1A1F15;
+    --text: #1A1F15;
+    --muted: #2E3324;
+    --border: #6B7C5E;
+    --glow: rgba(74, 139, 56, 0.25);
+  }
+
+
 
 
 
@@ -1159,6 +1194,7 @@
       <label>Theme</label>
       <div class="pref-buttons">
         <button class="pref-btn selected" onclick="setTheme('light', this)">Light</button>
+        <button class="pref-btn" onclick="setTheme('mid-sage', this)">Mid sage</button>
         <button class="pref-btn" onclick="setTheme('dark-sage', this)">Dark sage</button>
       </div>
     </div>
@@ -1919,11 +1955,9 @@ function setVoiceSpeed(speed, btn) {
 function setTheme(theme, btn) {
   state.theme = theme;
   if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
-  if (theme === 'dark-sage') {
-    document.documentElement.classList.add('dark-sage');
-  } else {
-    document.documentElement.classList.remove('dark-sage');
-  }
+  document.documentElement.classList.remove('dark-sage', 'mid-sage');
+  if (theme === 'dark-sage') document.documentElement.classList.add('dark-sage');
+  else if (theme === 'mid-sage') document.documentElement.classList.add('mid-sage');
   savePrefs();
 }
 
