@@ -38,6 +38,85 @@
     --radius: 18px;
   }
 
+  /* High stimulation theme — brighter, more saturated, faster feedback */
+  :root.high-stim {
+    --bg: #EDF5E9;
+    --bg-soft: #E0EFD8;
+    --card: #F4FAF0;
+    --sage: #5B8A4E;
+    --sage-light: #7BB06A;
+    --sage-dark: #3D6B33;
+    --amber: #D4A537;
+    --amber-soft: #E8C568;
+    --cream: #2A3D24;
+    --text: #2A3D24;
+    --muted: #4A5D44;
+    --border: #B8D4AC;
+    --glow: rgba(91, 138, 78, 0.22);
+  }
+
+  /* Dark theme — warm dark, not pure black */
+  :root.dark-theme {
+    --bg: #1C1F1A;
+    --bg-soft: #232620;
+    --card: #2A2D26;
+    --sage: #8FAF84;
+    --sage-light: #A5C59A;
+    --sage-dark: #6B8B60;
+    --amber: #C9A84E;
+    --amber-soft: #D4B86A;
+    --cream: #C8CCC0;
+    --text: #C8CCC0;
+    --muted: #8A8E82;
+    --border: #3A3D34;
+    --glow: rgba(143, 175, 132, 0.15);
+  }
+
+  /* High stim animated progress dots */
+  .high-stim .step-dot.active {
+    animation: dotPulse 1s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 8px var(--sage-light); }
+    50% { transform: scale(1.4); box-shadow: 0 0 16px var(--sage-light); }
+  }
+  .high-stim .step-dot.done {
+    animation: dotPop 0.4s ease;
+  }
+  @keyframes dotPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.6); }
+    100% { transform: scale(1); }
+  }
+
+  /* High stim glow circle — brighter pulse */
+  .high-stim #glow-circle {
+    animation: softPulse 3s ease-in-out infinite;
+  }
+
+  /* High stim dopamine ripple */
+  .dopamine-ripple {
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--sage-light);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+  }
+  .dopamine-ripple.fire {
+    animation: ripple 0.6s ease-out;
+  }
+  @keyframes ripple {
+    0% { opacity: 0.8; width: 20px; height: 20px; }
+    100% { opacity: 0; width: 200px; height: 200px; }
+  }
+
+  /* Dark theme body transition */
+  body { transition: background 0.6s ease, color 0.6s ease; }
+
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
@@ -1055,10 +1134,24 @@
   <div class="voice-section">
     <h3>Sensory Profile</h3>
     <div class="pref-group">
+      <label>Theme</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setTheme('light', this)">Light</button>
+        <button class="pref-btn" onclick="setTheme('dark', this)">Dark</button>
+      </div>
+    </div>
+    <div class="pref-group">
       <label>Stimulation level</label>
       <div class="pref-buttons">
         <button class="pref-btn selected" onclick="setSensory('low', this)">Low stimulation</button>
-        <button class="pref-btn" onclick="setSensory('high', this)">Gentle stimulation</button>
+        <button class="pref-btn" onclick="setSensory('high', this)">High stimulation</button>
+      </div>
+    </div>
+    <div class="pref-group">
+      <label>Haptic feedback</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setHaptics('on', this)">On</button>
+        <button class="pref-btn" onclick="setHaptics('off', this)">Off</button>
       </div>
     </div>
     <div class="pref-group">
@@ -1131,6 +1224,8 @@ let state = {
   voiceOn: true,
   voiceSpeed: 0.85,
   sensory: 'low',
+  theme: 'light',
+  haptics: 'on',
   brightness: 3,
   comfortDial: 1,
   selectedArea: null,
@@ -1151,6 +1246,9 @@ try {
   if (state.preferences.voiceOn !== undefined) state.voiceOn = state.preferences.voiceOn;
   if (state.preferences.voiceSpeed) state.voiceSpeed = state.preferences.voiceSpeed;
   if (state.preferences.sensory) state.sensory = state.preferences.sensory;
+  if (state.preferences.theme) { state.theme = state.preferences.theme; setTheme(state.preferences.theme); }
+  if (state.preferences.haptics) state.haptics = state.preferences.haptics;
+  if (state.preferences.sensory === 'high') setSensory('high');
   if (state.preferences.brightness) state.brightness = state.preferences.brightness;
 } catch(e) {}
 
@@ -1160,6 +1258,8 @@ function savePrefs() {
       voiceOn: state.voiceOn,
       voiceSpeed: state.voiceSpeed,
       sensory: state.sensory,
+      theme: state.theme,
+      haptics: state.haptics,
       brightness: state.brightness
     }));
   } catch(e) {}
@@ -1655,12 +1755,14 @@ function nextStep() {
   const routine = ROUTINES[state.currentRoutine];
   if (!routine) return;
   state.currentStep++;
+  vibrate(30);
+  fireDopamineRipple();
   if (state.currentStep >= routine.steps.length) finishSteps();
   else playStep();
 }
 
 function prevStep() {
-  if (state.currentStep > 0) { state.currentStep--; playStep(); }
+  if (state.currentStep > 0) { state.currentStep--; vibrate(20); playStep(); }
 }
 
 function pauseRoutine() {
@@ -1795,18 +1897,46 @@ function setVoiceSpeed(speed, btn) {
 
 function setSensory(level, btn) {
   state.sensory = level;
-  btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); });
-  btn.classList.add('selected');
-  if (level === 'low') {
-    document.documentElement.style.setProperty('--bg', '#E8E4D9');
-    document.documentElement.style.setProperty('--bg-soft', '#E0DCD1');
-    document.documentElement.style.setProperty('--card', '#F2EFE8');
+  if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
+  if (level === 'high') {
+    document.documentElement.classList.add('high-stim');
   } else {
-    document.documentElement.style.setProperty('--bg', '#F2EFE8');
-    document.documentElement.style.setProperty('--bg-soft', '#EAE6DD');
-    document.documentElement.style.setProperty('--card', '#F8F5F0');
+    document.documentElement.classList.remove('high-stim');
   }
   savePrefs();
+}
+
+function setTheme(theme, btn) {
+  state.theme = theme;
+  if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark-theme');
+  } else {
+    document.documentElement.classList.remove('dark-theme');
+  }
+  savePrefs();
+}
+
+function setHaptics(setting, btn) {
+  state.haptics = setting;
+  if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
+  savePrefs();
+}
+
+function vibrate(pattern) {
+  if (state.haptics === 'off') return;
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+function fireDopamineRipple() {
+  if (state.sensory !== 'high') return;
+  var ripple = document.createElement('div');
+  ripple.className = 'dopamine-ripple';
+  document.body.appendChild(ripple);
+  requestAnimationFrame(function() {
+    ripple.classList.add('fire');
+    setTimeout(function() { ripple.remove(); }, 600);
+  });
 }
 
 function setBrightness(val) {
