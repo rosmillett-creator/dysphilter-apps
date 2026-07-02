@@ -55,39 +55,9 @@
     --glow: rgba(91, 138, 78, 0.22);
   }
 
-  /* Dark theme — warm dark, not pure black */
-  :root.dark-theme {
-    --bg: #1C1F1A;
-    --bg-soft: #232620;
-    --card: #2A2D26;
-    --sage: #8FAF84;
-    --sage-light: #A5C59A;
-    --sage-dark: #6B8B60;
-    --amber: #C9A84E;
-    --amber-soft: #D4B86A;
-    --cream: #C8CCC0;
-    --text: #C8CCC0;
-    --muted: #8A8E82;
-    --border: #3A3D34;
-    --glow: rgba(143, 175, 132, 0.15);
-  }
 
-  /* Dark + High stimulation — brighter accents on dark background */
-  :root.dark-theme.high-stim {
-    --bg: #1A1E18;
-    --bg-soft: #222620;
-    --card: #2C3026;
-    --sage: #7BC468;
-    --sage-light: #9EE088;
-    --sage-dark: #5BA248;
-    --amber: #E8C568;
-    --amber-soft: #F0D590;
-    --cream: #E0E4D8;
-    --text: #E0E4D8;
-    --muted: #9CA098;
-    --border: #3E4536;
-    --glow: rgba(123, 196, 104, 0.28);
-  }
+
+
 
   /* High stim animated progress dots */
   .high-stim .step-dot.active {
@@ -131,8 +101,7 @@
     100% { opacity: 0; width: 200px; height: 200px; }
   }
 
-  /* Dark theme body transition */
-  body { transition: background 0.6s ease, color 0.6s ease; }
+
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -1151,11 +1120,6 @@
   <div class="voice-section">
     <h3>Sensory Profile</h3>
     <div class="pref-group">
-      <label>Theme</label>
-      <div class="pref-buttons">
-        <button class="pref-btn selected" onclick="setTheme('light', this)">Light</button>
-        <button class="pref-btn" onclick="setTheme('dark', this)">Dark</button>
-      </div>
     </div>
     <div class="pref-group">
       <label>Stimulation level</label>
@@ -1923,16 +1887,6 @@ function setSensory(level, btn) {
   savePrefs();
 }
 
-function setTheme(theme, btn) {
-  state.theme = theme;
-  if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark-theme');
-  } else {
-    document.documentElement.classList.remove('dark-theme');
-  }
-  savePrefs();
-}
 
 function setHaptics(setting, btn) {
   state.haptics = setting;
