@@ -6,6 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#2a2630">
+    <link rel="manifest" href="hoa-manifest.json">
+    <link rel="apple-touch-icon" href="icons/hoa-180.png">
+    <meta name="apple-mobile-web-app-title" content="Hoa Wairua">
+    <meta name="mobile-web-app-capable" content="yes">
 <title>Hoa Wairua — Gentle Energy</title>
 <style>
   /* ════════════════════════════════════════════════════════════════
@@ -1281,6 +1285,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (state.screen === 'routine' || state.screen === 'breathing') e.preventDefault();
   }, { passive: false });
 });
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("sw-hoa.js").catch(function() {});
+  });
+}
 </script>
 </body>
 </html>
