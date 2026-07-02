@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2a2630">
+<title>Hoa Wairua — Gentle Energy</title>
+<style>
+  /* ════════════════════════════════════════════════════════════════
+     Hoa Wairua — Gentle Energy, Wherever You Are
+     © Rosalind Millett / DysPhilter™ 2026
+     Māori for "soul friend / spiritual companion" — sister of Enef Car
+     A Reiki self-practice and co-regulation companion
+     ════════════════════════════════════════════════════════════════ */
+
+  :root {
+    --bg: #2a2630;
+    --bg-soft: #332e3a;
+    --card: #38333f;
+    --sage: #8B9B87;
+    --sage-light: #B5C5AD;
+    --sage-dark: #6B7B67;
+    --violet: #8B7BAE;
+    --violet-light: #B8A8D4;
+    --violet-dark: #6a5d88;
+    --amber: #C9B88E;
+    --amber-soft: #d4c19a;
+    --cream: #F5F0E8;
+    --text: #e0dcd2;
+    --muted: #9a948a;
+    --border: #443e4a;
+    --glow: rgba(139, 123, 174, 0.18);
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background 2s ease;
+  }
+
+  .screen { display: none; min-height: 100vh; padding: 24px 20px; animation: fadeIn 0.8s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 0.9; } }
+  @keyframes energyFlow { 0% { transform: scale(0.8); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(0.8); opacity: 0.3; } }
+  @keyframes drift { 0% { transform: translate(0, 0); } 50% { transform: translate(2px, -3px); } 100% { transform: translate(0, 0); } }
+
+  .welcome-logo { text-align: center; margin: 40px 0 16px; }
+  .welcome-logo h1 { font-size: 2rem; font-weight: 300; letter-spacing: 0.05em; color: var(--violet-light); }
+  .welcome-logo p { font-size: 0.85rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.03em; }
+  .welcome-subtitle { text-align: center; font-size: 0.95rem; color: var(--sage-light); margin: 20px 0 16px; font-style: italic; line-height: 1.5; }
+
+  .pathway-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 28px 24px; margin-bottom: 16px; cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden;
+  }
+  .pathway-card:active { transform: scale(0.98); }
+  .pathway-card:hover { border-color: var(--violet); box-shadow: 0 0 30px var(--glow); }
+  .pathway-card h2 { font-size: 1.15rem; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
+  .pathway-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+  .pathway-card .glyph { font-size: 1.6rem; margin-bottom: 12px; opacity: 0.7; }
+
+  .btn {
+    display: inline-block; background: var(--violet); color: var(--cream); border: none;
+    padding: 14px 28px; border-radius: 12px; font-size: 0.95rem; font-family: inherit; cursor: pointer;
+    transition: all 0.3s ease; letter-spacing: 0.02em;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .btn-full { display: block; width: 100%; text-align: center; }
+
+  .back-btn {
+    background: transparent; border: none; color: var(--muted); font-size: 0.85rem;
+    padding: 8px 0; margin-bottom: 16px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+  }
+  .back-btn:active { color: var(--violet-light); }
+
+  .area-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .area-tile {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px 16px; text-align: center; cursor: pointer; transition: all 0.4s ease;
+  }
+  .area-tile:active { transform: scale(0.97); }
+  .area-tile.selected { border-color: var(--violet); background: var(--bg-soft); box-shadow: 0 0 20px var(--glow); }
+  .area-tile .area-glyph { font-size: 2rem; margin-bottom: 8px; opacity: 0.6; }
+  .area-tile h3 { font-size: 0.95rem; font-weight: 400; color: var(--cream); }
+  .area-tile p { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  .dial-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px; margin: 20px 0; }
+  .dial-section label { font-size: 0.9rem; color: var(--violet-light); display: block; margin-bottom: 12px; }
+  .dial {
+    -webkit-appearance: none; width: 100%; height: 6px; border-radius: 3px;
+    background: linear-gradient(90deg, var(--sage-dark), var(--violet)); outline: none; margin: 8px 0;
+  }
+  .dial::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--cream); box-shadow: 0 0 12px rgba(245,240,232,0.3); cursor: pointer;
+  }
+  .dial-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); }
+
+  .check-in { margin: 20px 0; }
+  .check-in h3 { font-size: 1rem; font-weight: 400; color: var(--cream); margin-bottom: 16px; text-align: center; }
+  .emoji-grid { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .emoji-btn {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    width: 64px; height: 64px; font-size: 1.8rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease;
+  }
+  .emoji-btn:active { transform: scale(0.92); }
+  .emoji-btn.selected { border-color: var(--violet); background: var(--bg-soft); box-shadow: 0 0 16px var(--glow); }
+
+  .routine-header { text-align: center; margin-bottom: 24px; }
+  .routine-header h2 { font-size: 1.2rem; font-weight: 400; color: var(--cream); }
+  .routine-header p { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+
+  .step-indicator { display: flex; justify-content: center; gap: 8px; margin: 16px 0; }
+  .step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: all 0.3s ease; }
+  .step-dot.active { background: var(--violet); box-shadow: 0 0 8px var(--violet); }
+  .step-dot.done { background: var(--sage); }
+
+  .energy-circle {
+    width: 180px; height: 180px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,107,158,0.2), transparent 70%);
+    margin: 32px auto; display: flex; align-items: center; justify-content: center;
+    animation: energyFlow 5s ease-in-out infinite;
+  }
+  .energy-circle.holding { animation: energyFlow 7s ease-in-out infinite; }
+  .energy-circle-inner {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: radial-gradient(circle, var(--violet-light), var(--violet-dark));
+    opacity: 0.6;
+  }
+
+  .whisper-text {
+    text-align: center; font-size: 1.05rem; line-height: 1.7; color: var(--cream);
+    max-width: 380px; margin: 0 auto 24px; min-height: 80px; padding: 0 8px;
+  }
+  .whisper-text .highlight { color: var(--violet-light); font-weight: 500; }
+
+  .timer-bar { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin: 16px auto; max-width: 300px; overflow: hidden; }
+  .timer-fill {
+    height: 100%; background: linear-gradient(90deg, var(--sage), var(--violet));
+    width: 0%; transition: width 0.1s linear; border-radius: 2px;
+  }
+
+  .routine-controls { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
+
+  .companion-toggle {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 20px; margin: 16px 0; display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; transition: all 0.3s ease;
+  }
+  .companion-toggle.active { border-color: var(--violet); }
+  .companion-toggle .label { font-size: 0.9rem; color: var(--text); }
+  .companion-toggle .label p { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .toggle-switch {
+    width: 44px; height: 24px; border-radius: 12px; background: var(--border);
+    position: relative; transition: background 0.3s ease; flex-shrink: 0;
+  }
+  .toggle-switch.on { background: var(--violet); }
+  .toggle-switch::after {
+    content: ''; position: absolute; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--cream); top: 2px; left: 2px; transition: transform 0.3s ease;
+  }
+  .toggle-switch.on::after { transform: translateX(20px); }
+
+  .voice-section { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin: 16px 0; }
+  .voice-section h3 { font-size: 0.9rem; font-weight: 400; color: var(--violet-light); margin-bottom: 12px; }
+
+  .symptom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .symptom-tile {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 14px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+  }
+  .symptom-tile:active { transform: scale(0.97); }
+  .symptom-tile.selected { border-color: var(--violet); box-shadow: 0 0 16px rgba(123,107,158,0.15); }
+  .symptom-tile .sym-glyph { font-size: 1.4rem; margin-bottom: 6px; opacity: 0.6; }
+  .symptom-tile h4 { font-size: 0.85rem; font-weight: 400; color: var(--cream); }
+
+  .routine-list-item {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 12px; cursor: pointer; transition: all 0.3s ease;
+  }
+  .routine-list-item:active { transform: scale(0.98); }
+  .routine-list-item:hover { border-color: var(--violet); }
+  .routine-list-item h3 { font-size: 1rem; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
+  .routine-list-item p { font-size: 0.8rem; color: var(--muted); }
+  .routine-list-item .meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.75rem; color: var(--sage); }
+
+  .breath-circle {
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(122,139,118,0.3), transparent 70%);
+    margin: 40px auto; display: flex; align-items: center; justify-content: center;
+    transition: transform 4s ease-in-out;
+  }
+  .breath-circle.inhale { transform: scale(1.3); }
+  .breath-circle.exhale { transform: scale(0.85); }
+  .breath-text { font-size: 0.85rem; color: var(--violet-light); text-align: center; }
+
+  .complete-screen { text-align: center; padding-top: 60px; }
+  .complete-screen .complete-glyph { font-size: 2.5rem; margin-bottom: 16px; opacity: 0.5; }
+  .complete-screen h2 { font-size: 1.3rem; font-weight: 300; color: var(--violet-light); margin-bottom: 8px; }
+  .complete-screen p { font-size: 0.9rem; color: var(--muted); max-width: 320px; margin: 0 auto 24px; }
+
+  .emergency-btn {
+    position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%;
+    background: var(--violet-dark); border: 2px solid var(--violet); color: var(--cream);
+    font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4); z-index: 100; transition: all 0.3s ease;
+  }
+  .emergency-btn:active { transform: scale(0.9); }
+
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-soft);
+    border-top: 1px solid var(--border); display: flex; justify-content: space-around;
+    padding: 8px 0 12px; z-index: 50;
+  }
+  .nav-btn {
+    background: transparent; border: none; color: var(--muted); font-size: 0.72rem;
+    padding: 4px 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .nav-btn.active { color: var(--violet-light); }
+  .nav-btn .nav-glyph { font-size: 1.1rem; opacity: 0.7; }
+
+  .nav-spacer { height: 60px; }
+  .section-title { font-size: 0.8rem; color: var(--violet); text-transform: uppercase; letter-spacing: 0.1em; margin: 24px 0 12px; font-weight: 500; }
+
+  .pref-group { margin-bottom: 16px; }
+  .pref-group > label { font-size: 0.85rem; color: var(--text); display: block; margin-bottom: 6px; }
+  .pref-buttons { display: flex; gap: 8px; }
+  .pref-btn {
+    flex: 1; background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px; font-size: 0.8rem; color: var(--muted); cursor: pointer; text-align: center; transition: all 0.3s ease;
+  }
+  .pref-btn.selected { border-color: var(--violet); color: var(--cream); background: var(--bg-soft); }
+
+  .principles-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px 20px; margin: 16px 0;
+  }
+  .principles-card h3 { font-size: 0.95rem; font-weight: 400; color: var(--violet-light); margin-bottom: 12px; text-align: center; }
+  .principles-card p { font-size: 0.88rem; color: var(--text); line-height: 1.8; margin-bottom: 4px; }
+  .principles-card .intro { font-size: 0.8rem; color: var(--muted); font-style: italic; margin-bottom: 12px; text-align: center; }
+
+  @media (max-width: 380px) {
+    .welcome-logo h1 { font-size: 1.7rem; }
+    .whisper-text { font-size: 0.95rem; }
+    .area-grid, .symptom-grid { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: WELCOME / HOME
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-logo">
+    <h1>Hoa Wairua</h1>
+    <p>Gentle energy, wherever you are</p>
+  </div>
+
+  <p class="welcome-subtitle">Welcome. Let yourself settle here for a moment.</p>
+
+  <p style="font-size:0.8rem; color:var(--muted); text-align:center; margin:0 16px 24px; line-height:1.6;">
+    On a train. In a waiting room. At someone's bedside. Before school, after work, in the middle of the night. For yourself, for someone you love, for a child learning that their own hands carry calm, or for a child showing you the same. Wherever you are, the energy is already there. You are not creating it — you are allowing it to flow.
+  </p>
+
+  <div class="principles-card">
+    <h3>Just for today</h3>
+    <p class="intro">The five Reiki principles — a gentle anchor</p>
+    <p>Just for today, I will not anger.</p>
+    <p>Just for today, I will not worry.</p>
+    <p>Just for today, I will be grateful.</p>
+    <p>Just for today, I will work honestly.</p>
+    <p>Just for today, I will be kind to all living things.</p>
+  </div>
+
+  <div class="pathway-card" onclick="goTo('self-healing')">
+    <div class="glyph">🤲</div>
+    <h2>For Myself</h2>
+    <p>Self-healing Reiki. Your hands on or hovering over your own body. No teacher needed, no belief required.</p>
+  </div>
+
+  <div class="pathway-card" onclick="goTo('offer')">
+    <div class="glyph">✨</div>
+    <h2>For Someone Else</h2>
+    <p>Offer Reiki to a child, a partner, a friend, a parent, a sibling. Gentle presence through your hands — hovering or light touch. And yes — a child can offer it to you too.</p>
+  </div>
+
+  <div class="pathway-card" onclick="goTo('presence')">
+    <div class="glyph">🌙</div>
+    <h2>Presence</h2>
+    <p>A deeply hushed space for bedside or palliative care. Quiet hands, quiet heart, quiet room.</p>
+  </div>
+
+  <div class="section-title">Where you are right now</div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('commute')">
+      <h3 style="font-size:0.9rem;">On the move</h3>
+      <p style="font-size:0.75rem;">Train, bus, car, plane — discreet, hands only</p>
+      <div class="meta"><span>~3 min</span> <span>Hands</span></div>
+    </div>
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('waiting')">
+      <h3 style="font-size:0.9rem;">Waiting</h3>
+      <p style="font-size:0.75rem;">Appointment, queue, results — settle the nerves</p>
+      <div class="meta"><span>~2 min</span> <span>Hands</span></div>
+    </div>
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('morning')">
+      <h3 style="font-size:0.9rem;">Morning calm</h3>
+      <p style="font-size:0.75rem;">Before the day begins — gentle, grounding</p>
+      <div class="meta"><span>~5 min</span> <span>Full body</span></div>
+    </div>
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('school-regulation')">
+      <h3 style="font-size:0.9rem;">School or work</h3>
+      <p style="font-size:0.75rem;">Regulation before or during — discreet</p>
+      <div class="meta"><span>~2 min</span> <span>Hands</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Longer routines</div>
+
+  <div class="routine-list-item" onclick="startRoutine('full-self')">
+    <h3>Full Self-Healing Sequence</h3>
+    <p>The traditional Reiki hand positions — head to root, front of body</p>
+    <div class="meta"><span>~20 min</span> <span>All positions</span> <span>Voice guided</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('sleep')">
+    <h3>Before Sleep</h3>
+    <p>Reiki hand positions to prepare the body for deep rest</p>
+    <div class="meta"><span>~12 min</span> <span>Head + Heart + Belly</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('anxiety')">
+    <h3>Anxiety & Overwhelm</h3>
+    <p>Hand positions for grounding when everything feels too much</p>
+    <div class="meta"><span>~8 min</span> <span>Head + Heart + Root</span></div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: SELF-HEALING PATHWAY
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-self-healing" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>For Myself</h2>
+    <p>Choose where you'd like to place your hands</p>
+  </div>
+
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin:16px 0; font-size:0.8rem; color:var(--muted); line-height:1.6;">
+    In Reiki, you do not push or press. Your hands simply rest — either lightly touching the body or hovering just above it. The energy flows through you. You are the channel, not the source. You do not need to do anything. Just be there.
+  </div>
+
+  <div class="area-grid">
+    <div class="area-tile" onclick="selectSelfArea('head')">
+      <div class="area-glyph">🧠</div>
+      <h3>Head & Crown</h3>
+      <p>Eyes, temples, back of head, crown</p>
+    </div>
+    <div class="area-tile" onclick="selectSelfArea('heart')">
+      <div class="area-glyph">💛</div>
+      <h3>Heart & Throat</h3>
+      <p>Chest, heart center, throat</p>
+    </div>
+    <div class="area-tile" onclick="selectSelfArea('belly')">
+      <div class="area-glyph">🌀</div>
+      <h3>Belly & Center</h3>
+      <p>Solar plexus, sacral, root</p>
+    </div>
+    <div class="area-tile" onclick="selectSelfArea('full')">
+      <div class="area-glyph">🌌</div>
+      <h3>Full Sequence</h3>
+      <p>All positions, head to root</p>
+    </div>
+  </div>
+
+  <div class="dial-section">
+    <label>How you connect</label>
+    <input type="range" class="dial" id="connection-dial" min="0" max="2" value="1" step="1">
+    <div class="dial-labels">
+      <span>Hovering (hands above)</span>
+      <span>Light rest (hands on body)</span>
+      <span>Gentle contact</span>
+    </div>
+  </div>
+
+  <div class="companion-toggle" onclick="toggleCompanion()">
+    <div class="label">
+      Companion Mode
+      <p>Together — sharing calm with a child, a parent, a sibling, or chosen family</p>
+    </div>
+    <div class="toggle-switch" id="companion-switch"></div>
+  </div>
+
+  <button class="btn btn-full" onclick="startSelfRoutine()">Begin</button>
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: OFFER PATHWAY (for someone else)
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-offer" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>For Someone Else</h2>
+    <p>Offer gentle energy to another person</p>
+  </div>
+
+  <p style="font-size:0.8rem; color:var(--muted); text-align:center; margin:0 16px 20px; line-height:1.6;">
+    You do not need to be a Reiki master. You do not need training or certification. The energy flows through anyone whose intention is gentle and whose hands are willing. Your presence is the attunement.
+  </p>
+
+  <div class="routine-list-item" onclick="startRoutine('offer-child')">
+    <h3>For a Child</h3>
+    <p>Gentle hand positions for a child — at bedtime, during overwhelm, or learning together. A child can also share these hand positions with you.</p>
+    <div class="meta"><span>~10 min</span> <span>Hovering or light touch</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('offer-partner')">
+    <h3>For a Partner or Friend</h3>
+    <p>Reiki for someone you care about — headache, stress, or simply comfort</p>
+    <div class="meta"><span>~15 min</span> <span>Full sequence</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('offer-anxiety')">
+    <h3>For Someone in Distress</h3>
+    <p>Grounding hand positions when someone is anxious, panicking, or overwhelmed</p>
+    <div class="meta"><span>~8 min</span> <span>Hovering focus</span></div>
+  </div>
+
+  <div class="companion-toggle" onclick="toggleCompanion()">
+    <div class="label">
+      Co-regulation
+      <p>Do this alongside them — both of you receiving</p>
+    </div>
+    <div class="toggle-switch" id="companion-switch-offer"></div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: PRESENCE PATHWAY
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-presence" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>Presence</h2>
+    <p>Quiet hands for the most fragile moments.</p>
+  </div>
+
+  <p class="welcome-subtitle">Take a slow breath. You do not need to do anything here.</p>
+
+  <p style="font-size:0.78rem; color:var(--muted); text-align:center; margin:0 16px 28px; line-height:1.6;">
+    This pathway was born in hospital rooms and beside beds. It is for the moments when there is nothing to fix — only someone to be with. Whether that is a child, a partner, a parent, or a friend who is ill. In Reiki, this is called "shuchu" — focused presence. Your hands and your quiet attention are the medicine.
+  </p>
+
+  <div class="routine-list-item" onclick="startRoutine('carer-grounding')">
+    <h3>Before You Enter</h3>
+    <p>A 60-second grounding moment for carers — breathe and settle before you step in</p>
+    <div class="meta"><span>~1 min</span> <span>Breathing only</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('bedside-presence')">
+    <h3>Bedside Presence</h3>
+    <p>Hovering hands — no touch needed. Resting hands near the body, allowing energy to flow</p>
+    <div class="meta"><span>Open-ended</span> <span>Hovering only</span> <span>Low light</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('hand-holding')">
+    <h3>Holding Hands</h3>
+    <p>The simplest Reiki of all — holding someone's hand and letting energy flow through contact</p>
+    <div class="meta"><span>Open-ended</span> <span>Gentle contact</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('breathing-anchor')">
+    <h3>Breathing Together</h3>
+    <p>A visual breathing guide at six breaths per minute — sync and settle</p>
+    <div class="meta"><span>Open-ended</span> <span>No timer</span></div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: ROUTINE PLAYER
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-routine" class="screen">
+  <button class="back-btn" onclick="exitRoutine()">← Back</button>
+  <div class="routine-header">
+    <h2 id="routine-title">Routine</h2>
+    <p id="routine-area">Hands</p>
+  </div>
+
+  <div id="before-checkin" class="check-in" style="display:none;">
+    <h3>How are you feeling right now?</h3>
+    <p style="text-align:center; font-size:0.8rem; color:var(--muted); margin-bottom:12px;">No scores. Just a gentle pause to notice.</p>
+    <div class="emoji-grid">
+      <button class="emoji-btn" onclick="selectCheckIn('before','😣')">😣</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','😟')">😟</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','😐')">😐</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','🙂')">🙂</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','😌')">😌</button>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn" onclick="proceedFromCheckIn('before')">Continue when ready</button>
+    </div>
+  </div>
+
+  <div id="step-player" style="display:none;">
+    <div class="step-indicator" id="step-dots"></div>
+    <div class="energy-circle" id="energy-circle">
+      <div class="energy-circle-inner"></div>
+    </div>
+    <p class="whisper-text" id="whisper-text"></p>
+    <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+    <div class="routine-controls">
+      <button class="btn-secondary btn" onclick="prevStep()">← Back</button>
+      <button class="btn-secondary btn" onclick="pauseRoutine()" id="pause-btn">Pause</button>
+      <button class="btn" onclick="nextStep()" id="next-btn">Next →</button>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn-secondary btn" style="font-size:0.8rem;" onclick="toggleVoice()" id="voice-btn">🔊 Voice on</button>
+    </div>
+  </div>
+
+  <div id="after-checkin" class="check-in" style="display:none;">
+    <h3>How do you feel now?</h3>
+    <p style="text-align:center; font-size:0.8rem; color:var(--muted); margin-bottom:12px;">Notice any shift, however small.</p>
+    <div class="emoji-grid">
+      <button class="emoji-btn" onclick="selectCheckIn('after','😣')">😣</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','😟')">😟</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','😐')">😐</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','🙂')">🙂</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','😌')">😌</button>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn" onclick="completeRoutine()">Finish</button>
+    </div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: COMPLETE
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-complete" class="screen">
+  <div class="complete-screen">
+    <div class="complete-glyph">🌙</div>
+    <h2>You allowed that</h2>
+    <p id="complete-message">The energy moved. You can feel it if you sit quietly for a moment.</p>
+    <button class="btn btn-full" style="max-width:280px; margin:0 auto;" onclick="goTo('welcome')">Return home</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: BREATHING ANCHOR
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-breathing" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>Breathing Together</h2>
+    <p>Follow the circle. No timer. No goal. Just breath.</p>
+  </div>
+  <div class="breath-circle" id="breath-circle">
+    <div class="breath-text" id="breath-text">Breathe in...</div>
+  </div>
+  <div style="text-align:center;">
+    <button class="btn-secondary btn" onclick="stopBreathing()">Finish when ready</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: SETTINGS
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-settings" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>Settings</h2>
+    <p>Make this space yours</p>
+  </div>
+
+  <div class="voice-section">
+    <h3>Voice Guidance</h3>
+    <div class="pref-group">
+      <label>Voice readout</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setVoicePref('on', this)">On</button>
+        <button class="pref-btn" onclick="setVoicePref('off', this)">Off</button>
+      </div>
+    </div>
+    <div class="pref-group">
+      <label>Speed</label>
+      <div class="pref-buttons">
+        <button class="pref-btn" onclick="setVoiceSpeed(0.7, this)">Slow</button>
+        <button class="pref-btn selected" onclick="setVoiceSpeed(0.85, this)">Gentle</button>
+        <button class="pref-btn" onclick="setVoiceSpeed(1.0, this)">Normal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="voice-section">
+    <h3>Sensory Profile</h3>
+    <div class="pref-group">
+      <label>Stimulation level</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setSensory('low', this)">Low stimulation</button>
+        <button class="pref-btn" onclick="setSensory('high', this)">Gentle stimulation</button>
+      </div>
+    </div>
+    <div class="pref-group">
+      <label>Screen brightness</label>
+      <input type="range" class="dial" id="brightness-dial" min="0" max="3" value="1" step="1" oninput="setBrightness(this.value)">
+      <div class="dial-labels">
+        <span>Very dim</span><span>Dim</span><span>Soft</span><span>Gentle</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="voice-section">
+    <h3>About Hoa Wairua</h3>
+    <p style="font-size:0.8rem; color:var(--muted); line-height:1.6;">
+      Hoa Wairua means "soul friend" or "spiritual companion" in te reo Māori. It is the sister of Enef Car, the Cornish phrase for the same deep idea — a companion who walks beside you at the level of the soul.<br><br>
+      This app does not diagnose, treat, or fix. It helps you offer steady, calming presence through your own hands — either resting gently on the body or hovering just above it. The energy flows through you. You are the channel, not the source.<br><br>
+      Reiki means "universal life energy" in Japanese — Rei (universal) and Ki (life force). You do not need to be attuned, trained, or certified to use this app. Your intention to be present and your willingness to let energy flow is enough.<br><br>
+      Hoa Wairua is for wherever you are: on a train, on a bus, in a car, on a plane. In a waiting room. At a desk. In a lesson. At someone's bedside in hospital or hospice. Before school, before work, before sleep. In the middle of the night when sleep won't come.<br><br>
+      It is for a person soothing their own anxiety, a parent sharing calm with their child, a child teaching a parent or sibling, a carer holding someone's hands in a hospital room, a friend sitting beside someone who is ill. It can be used alone or together. A child can learn it, and a child can teach it.<br><br>
+      No data collected. No account needed. Everything stays on your device.<br><br>
+      © Rosalind Millett / DysPhilter™ 2026
+    </p>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     EMERGENCY & NAV
+     ════════════════════════════════════════════════════════════════ -->
+<button class="emergency-btn" onclick="startRoutine('emergency')" title="Emergency calm">🌌</button>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="goTo('welcome')">
+    <span class="nav-glyph">🏠</span> Home
+  </button>
+  <button class="nav-btn" onclick="goTo('settings')">
+    <span class="nav-glyph">⚙</span> Settings
+  </button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// HOA WAIRUA — APP LOGIC
+// © Rosalind Millett / DysPhilter™ 2026
+// ════════════════════════════════════════════════════════════════
+
+let state = {
+  screen: 'welcome', companionMode: false, voiceOn: true, voiceSpeed: 0.85,
+  sensory: 'low', brightness: 1, selectedArea: null, currentRoutine: null,
+  currentStep: 0, routineTimer: null, routinePaused: false,
+  checkInBefore: null, checkInAfter: null
+};
+
+try {
+  const saved = localStorage.getItem('hoawairua_prefs');
+  if (saved) {
+    const p = JSON.parse(saved);
+    if (p.voiceOn !== undefined) state.voiceOn = p.voiceOn;
+    if (p.voiceSpeed) state.voiceSpeed = p.voiceSpeed;
+    if (p.sensory) state.sensory = p.sensory;
+    if (p.brightness) state.brightness = p.brightness;
+  }
+} catch(e) {}
+
+function savePrefs() {
+  try {
+    localStorage.setItem('hoawairua_prefs', JSON.stringify({
+      voiceOn: state.voiceOn, voiceSpeed: state.voiceSpeed,
+      sensory: state.sensory, brightness: state.brightness
+    }));
+  } catch(e) {}
+}
+
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById('screen-' + screenId);
+  if (screen) { screen.classList.add('active'); state.screen = screenId; window.scrollTo(0, 0); }
+  if (window.speechSynthesis) speechSynthesis.cancel();
+}
+
+function toggleCompanion() {
+  state.companionMode = !state.companionMode;
+  document.querySelectorAll('.toggle-switch').forEach(el => el.classList.toggle('on', state.companionMode));
+  document.querySelectorAll('.companion-toggle').forEach(el => el.classList.toggle('active', state.companionMode));
+}
+
+function selectSelfArea(area) {
+  state.selectedArea = area;
+  document.querySelectorAll('#screen-self-healing .area-tile').forEach(t => t.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+function startSelfRoutine() {
+  const areaMap = { head: 'self-head', heart: 'self-heart', belly: 'self-belly', full: 'full-self' };
+  const key = areaMap[state.selectedArea] || 'full-self';
+  startRoutine(key);
+}
+
+// ════════════════════════════════════════════════════════════════
+// ROUTINE DEFINITIONS — REIKI HAND POSITIONS
+// ════════════════════════════════════════════════════════════════
+const ROUTINES = {
+  // ── FULL SELF-HEALING SEQUENCE (traditional Usui positions, front of body) ──
+  'full-self': {
+    title: 'Full Self-Healing Sequence',
+    area: 'Traditional Reiki hand positions — head to root',
+    companion: true,
+    steps: [
+      { text: "Find a comfortable position. Sitting up or lying down — either works. Let your body settle before we begin.", hold: 10 },
+      { text: "Take three slow breaths. In through the nose, out through the mouth. With each breath, let go of the day a little more.", hold: 15 },
+      { text: "Position one — the eyes. Place your palms gently over your eyes, fingers pointing upward. Don't press — just rest. The eye position calms the mind and soothes the nervous system. Let the darkness and warmth settle you.", hold: 90 },
+      { text: "Position two — the temples. Slide your hands to your temples. Fingers resting softly on the sides of your head. This position eases mental tension and overthinking. Just hold.", hold: 60 },
+      { text: "Position three — the back of the head. Cradle the back of your head in your hands. Fingers supporting the base of your skull. This is where the mind releases — thoughts, worries, plans. Let them drain away.", hold: 60 },
+      { text: "Position four — the crown. Place both hands on the top of your head. Palms flat, fingers relaxed. The crown connects to the whole body. Energy enters here and flows down through everything. Hold and let it flow.", hold: 60 },
+      { text: "Position five — the throat. Gently rest your hands on your throat. Very light — the throat is delicate. This position clears the voice center and releases what has been left unsaid.", hold: 45 },
+      { text: "Position six — the heart. Place both hands on the center of your chest, over your heart. This is the heart center. Let warmth build here. Whatever you are carrying — grief, worry, love, fear — let it rest in your hands.", hold: 90 },
+      { text: "Position seven — the solar plexus. Move your hands to your upper belly, just below your ribcage. This is your power center — where anxiety lives, where gut feelings come from. Let your hands rest there and breathe.", hold: 60 },
+      { text: "Position eight — the sacral. Move down to your lower belly, below your navel. This is the creative and emotional center. Hands resting gently. Let any held emotions soften.", hold: 60 },
+      { text: "Position nine — the root. Place your hands on your lower belly, over the pelvic area. This is your foundation — safety, grounding, belonging. Let your hands tell your body that you are here and you are secure.", hold: 60 },
+      { text: "Now rest your hands in your lap. Palms up. Feel the energy still moving. You do not need to do anything more. It will continue to flow on its own.", hold: 20 },
+      { text: "Take one more slow breath. Notice how your body feels different from when we started. That difference is the energy. It was always there. You just allowed it to move.", hold: 15 }
+    ]
+  },
+
+  // ── SELF: HEAD & CROWN ──
+  'self-head': {
+    title: 'Self-Healing — Head & Crown',
+    area: 'Eyes, temples, back of head, crown',
+    companion: true,
+    steps: [
+      { text: "Sit or lie down. Let your head feel heavy and supported.", hold: 8 },
+      { text: "Palms over your eyes. Don't press — just rest. The darkness and warmth calm the mind. This is the first traditional Reiki position.", hold: 60 },
+      { text: "Slide to your temples. Fingers resting on the sides of your head. Mental tension lives here — the endless thinking, planning, worrying. Let it soften.", hold: 50 },
+      { text: "Cradle the back of your head. Hands supporting the base of your skull. This is where thoughts release. Let them drain.", hold: 50 },
+      { text: "Both hands on the crown of your head. Palms flat. The crown is the gateway — energy enters here and flows through everything. Just hold and let it flow.", hold: 60 },
+      { text: "Slowly lower your hands. Sit with the quiet. The head holds so much — it deserves this gentleness.", hold: 12 }
+    ]
+  },
+
+  // ── SELF: HEART & THROAT ──
+  'self-heart': {
+    title: 'Self-Healing — Heart & Throat',
+    area: 'Throat, heart center, chest',
+    companion: true,
+    steps: [
+      { text: "Find a still position. Let your chest soften.", hold: 8 },
+      { text: "Rest your hands gently on your throat. Very light contact — the throat is delicate. This position releases what has been left unsaid, swallowed down, held back.", hold: 45 },
+      { text: "Move both hands to the center of your chest — over your heart. This is the heart center. Whatever you are carrying — grief, love, fear, longing — let it rest here in your hands.", hold: 80 },
+      { text: "If emotion comes, let it. This is the heart releasing. Your hands are holding space for it. You do not need to understand it. Just let it move.", hold: 45 },
+      { text: "Broaden your hand placement — cover more of your chest. Let the warmth spread. The heart center connects to every part of you.", hold: 30 },
+      { text: "Lower your hands slowly. Notice the openness in your chest. You held space for yourself. That matters.", hold: 12 }
+    ]
+  },
+
+  // ── SELF: BELLY & CENTER ──
+  'self-belly': {
+    title: 'Self-Healing — Belly & Center',
+    area: 'Solar plexus, sacral, root',
+    companion: true,
+    steps: [
+      { text: "Sit or lie comfortably. Let your belly be soft — no holding it in.", hold: 8 },
+      { text: "Place both hands on your upper belly, just below your ribcage. The solar plexus — where anxiety lives, where gut feelings come from. Let your hands rest there and breathe.", hold: 60 },
+      { text: "Move down to your lower belly, below your navel. The sacral center — emotions and creativity. Hands resting gently. Let any held feelings soften.", hold: 50 },
+      { text: "Now place your hands on your lower belly, over the pelvic area. The root — your foundation. Safety, grounding, belonging. Let your hands tell your body that you are secure.", hold: 50 },
+      { text: "Return to the solar plexus. One hand there, one hand on your heart. Feel the connection between them — the gut and the heart, talking to each other through your hands.", hold: 40 },
+      { text: "Rest both hands in your lap. The center is settled. You are grounded.", hold: 12 }
+    ]
+  },
+
+  // ── ON THE MOVE ──
+  'commute': {
+    title: 'On the Move',
+    area: 'Discreet — hands only, no one will notice',
+    companion: false,
+    steps: [
+      { text: "Wherever you are right now — train, bus, car, plane — your hands are right there. No one needs to see what you're doing.", hold: 5 },
+      { text: "Rest your hands in your lap, palms up. You don't need to place them on your body. Just let them rest open. Energy flows through open hands, even in your lap.", hold: 20 },
+      { text: "Now turn one palm to face the other. Not touching — just facing. Feel the warmth between them. That warmth is the energy. It is always there.", hold: 25 },
+      { text: "Bring one hand to the center of your chest — over your heart, under your clothes if you prefer. The other hand stays in your lap. Hold. Let energy flow between your heart and your grounding hand.", hold: 30 },
+      { text: "Both hands back in your lap now. Palms up. You carried calm with you onto this train, this bus, this plane. It was always there.", hold: 12 }
+    ]
+  },
+
+  // ── WAITING ──
+  'waiting': {
+    title: 'While You Wait',
+    area: 'Hands — settle the nervous system',
+    companion: false,
+    steps: [
+      { text: "Waiting is hard. The body tightens. The mind races ahead. Let's use this moment instead of enduring it.", hold: 5 },
+      { text: "One hand on your heart, the other on your belly. Under your clothes, or on top — either way. No one can see.", hold: 30 },
+      { text: "Breathe into the belly hand. Feel it rise and fall. The heart hand feels the beat. You are here. You are alive. You are waiting, and that is okay.", hold: 30 },
+      { text: "If you can't reach both: just one hand on your heart. That is enough. The energy flows through one hand just as well.", hold: 20 },
+      { text: "Rest your hands. Whatever you are waiting for, you can meet it from this place. Not braced. Just ready.", hold: 10 }
+    ]
+  },
+
+  // ── MORNING CALM ──
+  'morning': {
+    title: 'Morning Calm',
+    area: 'Full body — before the day begins',
+    companion: false,
+    steps: [
+      { text: "Before the day asks anything of you. Let's set a gentle baseline.", hold: 6 },
+      { text: "Palms over your eyes. Rest. Let the mind wake softly — no rush, no lists yet.", hold: 45 },
+      { text: "Hands to the crown of your head. Energy enters here. Let it flow down through your whole body, waking it gently.", hold: 40 },
+      { text: "Hands to your heart center. Set an intention for the day — not a goal, just a feeling. 'Gentle.' 'Steady.' 'Present.' Whatever word comes.", hold: 40 },
+      { text: "Hands to your solar plexus — upper belly. Your power center. Let it know that today you will move from calm, not from force.", hold: 35 },
+      { text: "Hands in your lap. Take one slow breath. The day can come now. You are ready — not braced, not rushed. Ready.", hold: 12 }
+    ]
+  },
+
+  // ── SCHOOL OR WORK ──
+  'school-regulation': {
+    title: 'School or Work Regulation',
+    area: 'Discreet — hands only',
+    companion: false,
+    steps: [
+      { text: "For the moments between things — before a lesson, before a meeting, during a break. No one will know.", hold: 5 },
+      { text: "Hands under the desk or on your lap. One hand on your heart, one on your belly. Or just both hands in your lap, palms up. Whatever feels possible right now.", hold: 25 },
+      { text: "Breathe. The energy is flowing, even if you can't feel it. Your hands are conduits. Your intention is the switch.", hold: 20 },
+      { text: "If overwhelm is rising: both hands on your belly. The center. Grounding. Let the feeling settle there instead of in your head.", hold: 20 },
+      { text: "Rest your hands. You are regulated enough for the next thing. Not perfect. Enough.", hold: 8 }
+    ]
+  },
+
+  // ── SLEEP ──
+  'sleep': {
+    title: 'Before Sleep',
+    area: 'Head + Heart + Belly',
+    companion: true,
+    steps: [
+      { text: "Let the day go. Whatever happened, it is done now. Lie down and let your body sink into the bed.", hold: 10 },
+      { text: "Palms over your eyes. The darkness signals the brain that it is time to rest. The warmth tells the nervous system that you are safe.", hold: 60 },
+      { text: "Hands to the crown. Let the day's mental activity drain out through the top of your head. Thoughts, plans, replays — all of it, flowing out.", hold: 50 },
+      { text: "Hands to your heart. Whatever the day held — let it rest here. Your heart can hold it while you sleep. You don't need to carry it into the night.", hold: 60 },
+      { text: "Hands to your belly. The center. Let the body know that the work is done. The only task now is rest.", hold: 50 },
+      { text: "Hands by your sides. Palms up. The energy will keep flowing while you sleep. You do not need to do anything more.", hold: 15 }
+    ]
+  },
+
+  // ── ANXIETY & OVERWHELM ──
+  'anxiety': {
+    title: 'Anxiety & Overwhelm',
+    area: 'Head + Heart + Root',
+    companion: true,
+    steps: [
+      { text: "You are safe right now. Let's find some ground together.", hold: 8 },
+      { text: "One hand on your heart, one on your belly. Feel the breath moving between them. The heart beating. The belly rising. You are here, in this body, in this moment.", hold: 40 },
+      { text: "Both hands to your head — palms on your temples. The anxiety lives in the mind as racing thoughts. Let your hands calm the mind. Gentle pressure, gentle warmth.", hold: 40 },
+      { text: "Hands back to your heart. The heart center. Anxiety is not you — it is moving through you. Let it move. Your hands are here, holding space.", hold: 45 },
+      { text: "Both hands on your lower belly. The root. Your foundation. This is where safety lives. Let your hands tell your body: you are secure. You are held. You are here.", hold: 40 },
+      { text: "One hand on your heart, one on your belly again. Breathe. The anxiety has passed through. You are still here.", hold: 12 }
+    ]
+  },
+
+  // ── OFFER: FOR A CHILD ──
+  'offer-child': {
+    title: 'For a Child',
+    area: 'Gentle hovering or light touch',
+    companion: false,
+    steps: [
+      { text: "Find a comfortable position beside your child. They can be lying down or sitting. Let them know you're going to rest your hands near them — gently, with no pressing.", hold: 10 },
+      { text: "Warm your hands first. Rub your palms together. Warm hands make all the difference for a child.", hold: 8 },
+      { text: "Hover your hands over their head — a few inches above. Or rest them very lightly on the top of their head. The crown. Energy flows from your hands into their whole body from here.", hold: 60 },
+      { text: "Move to their heart center — the center of their chest. Hover or rest very lightly. This helps them feel safe. Your presence here says: you are loved, you are held.", hold: 60 },
+      { text: "Move to their belly — the center. Children hold anxiety in their bellies. A warm hand here, resting gently, tells their body to let go.", hold: 50 },
+      { text: "If they are still and settled: stay at the belly. Or move back to the crown. Follow what feels right. There is no wrong way.", hold: 40 },
+      { text: "Slowly lift your hands away. Sit with them for a moment. You just taught them that hands carry calm. They will remember this.", hold: 12 }
+    ]
+  },
+
+  // ── OFFER: FOR A PARTNER OR FRIEND ──
+  'offer-partner': {
+    title: 'For a Partner or Friend',
+    area: 'Full sequence — hovering or light touch',
+    companion: false,
+    steps: [
+      { text: "Ask them to lie down comfortably. Let them know you're going to rest your hands on or above different areas. No massage, no pressure — just presence.", hold: 10 },
+      { text: "Warm your hands. This is always the first step.", hold: 8 },
+      { text: "Hands over or on their eyes — palms gently covering. This position calms the entire nervous system. Hold for a full minute.", hold: 60 },
+      { text: "Move to their temples. Light rest. The mind releases here.", hold: 45 },
+      { text: "Back of the head — cradle it gently. Thoughts drain away.", hold: 45 },
+      { text: "Crown of the head. Hands resting on top. The gateway. Energy flows from here to everywhere.", hold: 50 },
+      { text: "Throat — very light, barely touching. The voice center. Unsaid words release here.", hold: 35 },
+      { text: "Heart center — both hands on the center of their chest. Hold this position the longest. The heart needs time to open.", hold: 80 },
+      { text: "Solar plexus — upper belly. Their power center. Let your hands rest and breathe with them.", hold: 50 },
+      { text: "Lower belly — the root. Foundation, safety, grounding. Let them know through your hands that they are secure.", hold: 45 },
+      { text: "Slowly lift your hands away. Let them rest. The energy will continue flowing on its own.", hold: 15 }
+    ]
+  },
+
+  // ── OFFER: FOR SOMEONE IN DISTRESS ──
+  'offer-anxiety': {
+    title: 'For Someone in Distress',
+    area: 'Hovering focus — grounding',
+    companion: false,
+    steps: [
+      { text: "If someone is panicking, anxious, or overwhelmed — your calm presence is the most powerful thing you can offer. Do not try to fix. Just be there.", hold: 8 },
+      { text: "Hover your hands over their head — the crown. A few inches above. You do not need to touch them. The energy flows through space.", hold: 45 },
+      { text: "Move to their heart center. Hover or very light touch. Your steady presence here helps their heart rate slow. Breathe slowly and audibly — they will sync to you.", hold: 50 },
+      { text: "Move to their belly — the center. If they will let you, rest your hand gently there. The root of anxiety lives in the belly. A warm, steady hand here says: you are safe.", hold: 45 },
+      { text: "Stay as long as they need. There is no rush. There is no timer. Your presence is the medicine.", hold: 20 },
+      { text: "When they are ready, slowly lift your hands. Sit with them. You were their anchor. That is enough.", hold: 12 }
+    ]
+  },
+
+  // ── PRESENCE: CARER GROUNDING ──
+  'carer-grounding': {
+    title: 'Before You Enter',
+    area: 'A 60-second moment for you',
+    companion: false,
+    steps: [
+      { text: "Before you go in — take a moment for you. Close your eyes if that feels safe.", hold: 8 },
+      { text: "Rub your palms together until they feel warm. This is your Reiki preparation — warming the hands, awakening the channel.", hold: 10 },
+      { text: "Place one hand on your heart, one on your belly. Breathe in for four. Out for six.", hold: 20 },
+      { text: "Again. In for four. Out for six. Let the corridor noise fade.", hold: 20 },
+      { text: "You do not need to fix anything. Your quiet presence is enough. The energy will flow through your hands. You just need to be there.", hold: 10 },
+      { text: "Open your eyes when you are ready. You are grounded. Your hands are warm. You can go in now.", hold: 8 }
+    ]
+  },
+
+  // ── PRESENCE: BEDSIDE PRESENCE ──
+  'bedside-presence': {
+    title: 'Bedside Presence',
+    area: 'Hovering hands — no touch needed',
+    companion: false,
+    steps: [
+      { text: "This is the quietest Reiki there is. No touch is needed. Your hands hover a few inches above the body, and the energy flows through the space between.", hold: 10 },
+      { text: "Warm your hands first. Rub your palms together. Feel the warmth build.", hold: 8 },
+      { text: "Hover your hands over their head — the crown. A few inches above. Do not touch. Just hold them there. The crown is the gateway. Energy enters here and flows through everything.", hold: 90 },
+      { text: "Move to their heart center. Hands hovering above the center of their chest. Hold. Your steady presence here supports their heart — literally. Breathe slowly.", hold: 90 },
+      { text: "Move to their belly — the center. Hovering. The root of safety. Your hands here say: you are secure. You are held.", hold: 60 },
+      { text: "If they are asleep or unconscious: stay at the crown. Energy flows regardless of whether they are awake. Your presence is received.", hold: 60 },
+      { text: "When you are ready, slowly lift your hands away. Sit with the quiet. You offered something that cannot be measured or named. It was received.", hold: 15 }
+    ]
+  },
+
+  // ── PRESENCE: HAND HOLDING ──
+  'hand-holding': {
+    title: 'Holding Hands',
+    area: 'The simplest Reiki of all',
+    companion: false,
+    steps: [
+      { text: "This is the most natural Reiki position in the world. People have been doing it for thousands of years without calling it anything.", hold: 10 },
+      { text: "Take their hand in yours. Interlock your fingers gently. Rest your thumb in the center of their palm.", hold: 10 },
+      { text: "That is it. Hold. The energy flows through the palm — the most powerful Reiki point on the body. You do not need to move, press, or do anything.", hold: 120 },
+      { text: "Breathe slowly. If they are awake, they will sync to your breathing without knowing it. Your calm becomes their calm.", hold: 120 },
+      { text: "There is no timer here. Stay as long as you want. When you are ready, gently release.", hold: 30 },
+      { text: "Sit with them. You held their hand. In Reiki, that is everything.", hold: 12 }
+    ]
+  },
+
+  // ── PRESENCE: BREATHING TOGETHER ──
+  'breathing-anchor': {
+    title: 'Breathing Together',
+    area: 'Open-ended — no timer',
+    companion: true,
+    steps: [
+      { text: "This has no timer. No goal. Just the breath. Follow the circle.", hold: 5, special: 'breathing' }
+    ]
+  },
+
+  // ── EMERGENCY CALM ──
+  'emergency': {
+    title: 'Emergency Calm',
+    area: 'One hand. One minute. Right now.',
+    companion: false,
+    steps: [
+      { text: "Right now, right here. One hand.", hold: 3 },
+      { text: "Place one hand on your heart. Feel it beating. You are here. You are alive. You are in this moment.", hold: 20 },
+      { text: "Other hand on your belly. Breathe into it. Let the belly rise. Let it fall. The energy is flowing through both hands right now.", hold: 25 },
+      { text: "You are safe. This moment will pass. Your hands are here, holding you.", hold: 12 }
+    ]
+  }
+};
+
+// ════════════════════════════════════════════════════════════════
+// ROUTINE PLAYER (same architecture as Enef Car)
+// ════════════════════════════════════════════════════════════════
+
+function startRoutine(routineKey) {
+  if (routineKey === 'breathing-anchor') { startBreathingScreen(); return; }
+  const routine = ROUTINES[routineKey];
+  if (!routine) return;
+
+  state.currentRoutine = routineKey;
+  state.currentStep = 0;
+  state.routinePaused = false;
+
+  goTo('routine');
+  document.getElementById('routine-title').textContent = routine.title;
+  document.getElementById('routine-area').textContent = routine.area;
+
+  if (routine.companion && state.companionMode) {
+    document.getElementById('before-checkin').style.display = 'block';
+    document.getElementById('step-player').style.display = 'none';
+    document.getElementById('after-checkin').style.display = 'none';
+  } else {
+    showStepPlayer();
+  }
+}
+
+function proceedFromCheckIn(phase) {
+  if (phase === 'before') {
+    document.getElementById('before-checkin').style.display = 'none';
+    showStepPlayer();
+  }
+}
+
+function showStepPlayer() {
+  document.getElementById('step-player').style.display = 'block';
+  document.getElementById('before-checkin').style.display = 'none';
+  document.getElementById('after-checkin').style.display = 'none';
+  const routine = ROUTINES[state.currentRoutine];
+  renderStepDots(routine.steps.length);
+  playStep();
+}
+
+function renderStepDots(total) {
+  const container = document.getElementById('step-dots');
+  container.innerHTML = '';
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot';
+    if (i < state.currentStep) dot.classList.add('done');
+    if (i === state.currentStep) dot.classList.add('active');
+    container.appendChild(dot);
+  }
+}
+
+function playStep() {
+  const routine = ROUTINES[state.currentRoutine];
+  if (!routine) return;
+
+  if (routine.steps[state.currentStep] && routine.steps[state.currentStep].special === 'breathing') {
+    startBreathingInRoutine();
+    return;
+  }
+
+  const step = routine.steps[state.currentStep];
+  const whisper = document.getElementById('whisper-text');
+  const circle = document.getElementById('energy-circle');
+
+  renderStepDots(routine.steps.length);
+  whisper.innerHTML = formatWhisperText(step.text);
+  circle.classList.toggle('holding', step.hold >= 60);
+  if (state.voiceOn) speakText(step.text);
+  startStepTimer(step.hold);
+}
+
+function formatWhisperText(text) {
+  const sentences = text.split(/(?<=\. )/);
+  if (sentences.length > 1) return `<span class="highlight">${sentences[0]}</span>${sentences.slice(1).join('')}`;
+  return text;
+}
+
+function startStepTimer(duration) {
+  clearInterval(state.routineTimer);
+  if (duration === 0) return;
+  const fill = document.getElementById('timer-fill');
+  let elapsed = 0;
+  const totalMs = duration * 1000;
+  state.routineTimer = setInterval(() => {
+    if (state.routinePaused) return;
+    elapsed += 100;
+    fill.style.width = Math.min(100, (elapsed / totalMs) * 100) + '%';
+    if (elapsed >= totalMs) clearInterval(state.routineTimer);
+  }, 100);
+}
+
+function nextStep() {
+  const routine = ROUTINES[state.currentRoutine];
+  if (!routine) return;
+  state.currentStep++;
+  if (state.currentStep >= routine.steps.length) finishSteps();
+  else playStep();
+}
+
+function prevStep() {
+  if (state.currentStep > 0) { state.currentStep--; playStep(); }
+}
+
+function pauseRoutine() {
+  state.routinePaused = !state.routinePaused;
+  document.getElementById('pause-btn').textContent = state.routinePaused ? 'Resume' : 'Pause';
+  if (state.routinePaused) { if (window.speechSynthesis) speechSynthesis.pause(); }
+  else { if (window.speechSynthesis) speechSynthesis.resume(); }
+}
+
+function exitRoutine() {
+  clearInterval(state.routineTimer);
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  stopBreathingInRoutine();
+  goTo('welcome');
+}
+
+function finishSteps() {
+  clearInterval(state.routineTimer);
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  const routine = ROUTINES[state.currentRoutine];
+  if (routine && routine.companion && state.companionMode) {
+    document.getElementById('step-player').style.display = 'none';
+    document.getElementById('after-checkin').style.display = 'block';
+  } else {
+    completeRoutine();
+  }
+}
+
+function completeRoutine() {
+  goTo('complete');
+  const messages = [
+    "The energy moved. You can feel it if you sit quietly for a moment.",
+    "Well done. Notice how your body feels right now.",
+    "You allowed the energy to flow. That is all Reiki ever asks.",
+    "The calm you feel is your own. The energy just helped you find it.",
+    "Your hands carried something gentle today. That matters more than you know."
+  ];
+  document.getElementById('complete-message').textContent = messages[Math.floor(Math.random() * messages.length)];
+}
+
+function selectCheckIn(phase, emoji) {
+  state[phase === 'before' ? 'checkInBefore' : 'checkInAfter'] = emoji;
+  const parent = event.currentTarget.parentElement;
+  parent.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+// ── Voice ──
+function speakText(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = state.voiceSpeed;
+  u.pitch = 1.0;
+  u.volume = 0.8;
+  const voices = speechSynthesis.getVoices();
+  if (voices.length > 0) {
+    const priority = [
+      'Samantha', 'Google UK English Female', 'Karen', 'Moira', 'Tessa',
+      'Fiona', 'Google US English', 'Allison', 'Ava', 'Serena',
+      'Google UK English Male'
+    ];
+    let selected = null;
+    for (const name of priority) {
+      selected = voices.find(v => v.name.includes(name));
+      if (selected) break;
+    }
+    if (!selected) selected = voices.find(v => v.lang.startsWith('en') && v.name.includes('Female'));
+    if (!selected) selected = voices.find(v => v.lang === 'en-GB');
+    if (!selected) selected = voices.find(v => v.lang.startsWith('en'));
+    if (selected) u.voice = selected;
+  }
+  speechSynthesis.speak(u);
+}
+
+function toggleVoice() {
+  state.voiceOn = !state.voiceOn;
+  document.getElementById('voice-btn').textContent = state.voiceOn ? '🔊 Voice on' : '🔇 Voice off';
+  if (!state.voiceOn && window.speechSynthesis) speechSynthesis.cancel();
+  savePrefs();
+}
+
+// ── Breathing ──
+let breathingInterval = null;
+
+function startBreathingInRoutine() {
+  const circle = document.getElementById('energy-circle');
+  const text = document.getElementById('whisper-text');
+  let isInhaling = true;
+  text.innerHTML = '<span class="highlight">Breathe in...</span>';
+  circle.style.animation = 'none';
+  circle.offsetHeight;
+  circle.style.transition = 'transform 4s ease-in-out';
+  circle.style.transform = 'scale(1.3)';
+  breathingInterval = setInterval(() => {
+    if (state.routinePaused) return;
+    isInhaling = !isInhaling;
+    if (isInhaling) { text.innerHTML = '<span class="highlight">Breathe in...</span>'; circle.style.transform = 'scale(1.3)'; }
+    else { text.innerHTML = '<span class="highlight">Breathe out...</span>'; circle.style.transform = 'scale(0.85)'; }
+  }, 4000);
+}
+
+function stopBreathingInRoutine() {
+  if (breathingInterval) { clearInterval(breathingInterval); breathingInterval = null; }
+}
+
+function startBreathingScreen() {
+  goTo('breathing');
+  const circle = document.getElementById('breath-circle');
+  const text = document.getElementById('breath-text');
+  let isInhaling = true;
+  text.textContent = 'Breathe in...';
+  circle.style.transform = 'scale(1.3)';
+  breathingInterval = setInterval(() => {
+    isInhaling = !isInhaling;
+    if (isInhaling) { text.textContent = 'Breathe in...'; circle.style.transform = 'scale(1.3)'; }
+    else { text.textContent = 'Breathe out...'; circle.style.transform = 'scale(0.85)'; }
+  }, 4000);
+}
+
+function stopBreathing() {
+  if (breathingInterval) { clearInterval(breathingInterval); breathingInterval = null; }
+  goTo('welcome');
+}
+
+// ── Settings ──
+function setVoicePref(val, btn) {
+  state.voiceOn = (val === 'on');
+  btn.parentElement.querySelectorAll('.pref-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  savePrefs();
+}
+
+function setVoiceSpeed(speed, btn) {
+  state.voiceSpeed = speed;
+  btn.parentElement.querySelectorAll('.pref-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  savePrefs();
+}
+
+function setSensory(level, btn) {
+  state.sensory = level;
+  btn.parentElement.querySelectorAll('.pref-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  if (level === 'low') {
+    document.documentElement.style.setProperty('--bg', '#161318');
+    document.documentElement.style.setProperty('--bg-soft', '#1e1a24');
+    document.documentElement.style.setProperty('--card', '#262130');
+  } else {
+    document.documentElement.style.setProperty('--bg', '#262130');
+    document.documentElement.style.setProperty('--bg-soft', '#2e2838');
+    document.documentElement.style.setProperty('--card', '#363040');
+  }
+  savePrefs();
+}
+
+function setBrightness(val) {
+  state.brightness = parseInt(val);
+  const opacities = [0.5, 0.7, 0.85, 1.0];
+  document.body.style.opacity = opacities[state.brightness];
+  savePrefs();
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', () => {
+  const opacities = [0.5, 0.7, 0.85, 1.0];
+  document.body.style.opacity = opacities[state.brightness];
+  const voiceBtn = document.getElementById('voice-btn');
+  if (voiceBtn) voiceBtn.textContent = state.voiceOn ? '🔊 Voice on' : '🔇 Voice off';
+  if (window.speechSynthesis) {
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+  }
+  document.addEventListener('touchmove', (e) => {
+    if (state.screen === 'routine' || state.screen === 'breathing') e.preventDefault();
+  }, { passive: false });
+});
+</script>
+</body>
+</html>
