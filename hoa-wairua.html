@@ -748,11 +748,6 @@
   <div class="voice-section">
     <h3>Sensory Profile</h3>
     <div class="pref-group">
-      <label>Theme</label>
-      <div class="pref-buttons">
-        <button class="pref-btn selected" onclick="setTheme('dark', this)">Dark</button>
-        <button class="pref-btn" onclick="setTheme('light', this)">Light</button>
-      </div>
     </div>
     <div class="pref-group">
       <label>Stimulation level</label>
@@ -843,7 +838,7 @@ try {
     if (p.voiceSpeed) state.voiceSpeed = p.voiceSpeed;
     if (p.sensory) state.sensory = p.sensory;
     if (p.brightness) state.brightness = p.brightness;
-  if (p.theme) { state.theme = p.theme; setTheme(p.theme); }
+
   if (p.haptics) state.haptics = p.haptics;
   if (p.sensory === 'high') setSensory('high');
   }
