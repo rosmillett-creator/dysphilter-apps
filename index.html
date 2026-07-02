@@ -55,6 +55,40 @@
     --glow: rgba(91, 138, 78, 0.22);
   }
 
+  /* Dark sage theme — deep sage green, not brown */
+  :root.dark-sage {
+    --bg: #1A2215;
+    --bg-soft: #212A1B;
+    --card: #26301F;
+    --sage: #8FAF84;
+    --sage-light: #A8C89C;
+    --sage-dark: #6B8B60;
+    --amber: #B8C5A8;
+    --amber-soft: #C8D4B8;
+    --cream: #D4DCC8;
+    --text: #C8D0BC;
+    --muted: #8A9480;
+    --border: #36402E;
+    --glow: rgba(143, 175, 132, 0.15);
+  }
+
+  /* Dark sage + high stim */
+  :root.dark-sage.high-stim {
+    --bg: #1A2215;
+    --bg-soft: #212A1B;
+    --card: #26301F;
+    --sage: #7BC468;
+    --sage-light: #9EE088;
+    --sage-dark: #5BA248;
+    --amber: #D4A537;
+    --amber-soft: #E8C568;
+    --cream: #D4DCC8;
+    --text: #C8D0BC;
+    --muted: #8A9480;
+    --border: #3A4A30;
+    --glow: rgba(123, 196, 104, 0.25);
+  }
+
 
 
 
@@ -1122,6 +1156,13 @@
     <div class="pref-group">
     </div>
     <div class="pref-group">
+      <label>Theme</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setTheme('light', this)">Light</button>
+        <button class="pref-btn" onclick="setTheme('dark-sage', this)">Dark sage</button>
+      </div>
+    </div>
+    <div class="pref-group">
       <label>Stimulation level</label>
       <div class="pref-buttons">
         <button class="pref-btn selected" onclick="setSensory('low', this)">Low stimulation</button>
@@ -1226,10 +1267,9 @@ try {
   if (saved) state.preferences = JSON.parse(saved);
   if (state.preferences.voiceOn !== undefined) state.voiceOn = state.preferences.voiceOn;
   if (state.preferences.voiceSpeed) state.voiceSpeed = state.preferences.voiceSpeed;
-  if (state.preferences.sensory) state.sensory = state.preferences.sensory;
-
-  if (state.preferences.haptics) state.haptics = state.preferences.haptics;
+  if (state.preferences.theme) setTheme(state.preferences.theme);
   if (state.preferences.sensory === 'high') setSensory('high');
+  if (state.preferences.haptics === 'on') setHaptics('on');
   if (state.preferences.brightness) state.brightness = state.preferences.brightness;
 } catch(e) {}
 
@@ -1873,6 +1913,17 @@ function setVoiceSpeed(speed, btn) {
   state.voiceSpeed = speed;
   btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); });
   btn.classList.add('selected');
+  savePrefs();
+}
+
+function setTheme(theme, btn) {
+  state.theme = theme;
+  if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
+  if (theme === 'dark-sage') {
+    document.documentElement.classList.add('dark-sage');
+  } else {
+    document.documentElement.classList.remove('dark-sage');
+  }
   savePrefs();
 }
 
