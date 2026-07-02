@@ -23,22 +23,22 @@
      ════════════════════════════════════════════════════════════════ */
 
   :root {
-    --bg: #2a2630;
-    --bg-soft: #332e3a;
-    --card: #38333f;
-    --sage: #8B9B87;
-    --sage-light: #B5C5AD;
-    --sage-dark: #6B7B67;
-    --violet: #8B7BAE;
-    --violet-light: #B8A8D4;
-    --violet-dark: #6a5d88;
-    --amber: #C9B88E;
-    --amber-soft: #d4c19a;
+    --bg: #F3F0F6;
+    --bg-soft: #EAE6F0;
+    --card: #F8F5FB;
+    --sage: #7A8B76;
+    --sage-light: #A5B89E;
+    --sage-dark: #5C6B56;
+    --violet: #7B6BA0;
+    --violet-light: #A89BC8;
+    --violet-dark: #5C4D80;
+    --amber: #B8A06E;
+    --amber-soft: #D4C19A;
     --cream: #F5F0E8;
-    --text: #e0dcd2;
-    --muted: #9a948a;
-    --border: #443e4a;
-    --glow: rgba(139, 123, 174, 0.18);
+    --text: #2A2630;
+    --muted: #4A4650;
+    --border: #D4CFD8;
+    --glow: rgba(123, 107, 160, 0.12);
     --radius: 18px;
   }
 
@@ -56,8 +56,8 @@
     --amber: #DCC890;
     --amber-soft: #E8D4A0;
     --cream: #F0EBE2;
-    --text: #EDE8E0;
-    --muted: #B0AAB0;
+    --text: #1A1420;
+    --muted: #3A3640;
     --border: #4E4658;
     --glow: rgba(168, 155, 200, 0.28);
   }
@@ -989,7 +989,7 @@ const ROUTINES = {
     companion: false,
     steps: [
       { text: "Before the day asks anything of you. Let's set a gentle baseline.", hold: 6 },
-      { text: "Palms over your eyes. Rest. Let the mind wake softly — no rush, no lists yet.", hold: 45 },
+      { text: "Palms over your eyes. Rest. Let the mind wake softly. No lists yet.", hold: 45 },
       { text: "Hands to the crown of your head. Energy enters here. Let it flow down through your whole body, waking it gently.", hold: 40 },
       { text: "Hands to your heart center. Set an intention for the day — not a goal, just a feeling. 'Gentle.' 'Steady.' 'Present.' Whatever word comes.", hold: 40 },
       { text: "Hands to your solar plexus — upper belly. Your power center. Let it know that today you will move from calm, not from force.", hold: 35 },
@@ -1411,12 +1411,7 @@ function setSensory(level, btn) {
   savePrefs();
 }
 
-function setTheme(theme, btn) {
-  state.theme = theme;
-  if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); }
-  if (theme === 'light') {
-    document.documentElement.classList.add('light-theme');
-  } else {
+ else {
     document.documentElement.classList.remove('light-theme');
   }
   savePrefs();
