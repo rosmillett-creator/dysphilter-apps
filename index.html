@@ -32,7 +32,7 @@
     --amber-soft: #A5B89E;
     --cream: #3D4239;
     --text: #3D4239;
-    --muted: #7A8076;
+    --muted: #5A5F55;
     --border: #D8D4C9;
     --glow: rgba(122, 139, 115, 0.12);
     --radius: 18px;
@@ -375,7 +375,7 @@
   .routine-list-item:hover { border-color: var(--sage); }
   .routine-list-item h3 { font-size: 1rem; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
   .routine-list-item p { font-size: 0.8rem; color: var(--muted); }
-  .routine-list-item .meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.75rem; color: var(--sage); }
+  .routine-list-item .meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.75rem; color: var(--sage-dark); }
 
   /* ── Breathing visual ── */
   .breath-circle {
@@ -461,7 +461,7 @@
   /* ── Section title ── */
   .section-title {
     font-size: 0.8rem;
-    color: var(--sage);
+    color: var(--sage-dark);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin: 24px 0 12px;
@@ -1001,7 +1001,6 @@
 <div id="screen-complete" class="screen">
   <div class="complete-screen">
     <div class="complete-glyph">🌙</div>
-    <h2>You did that</h2>
     <p id="complete-message">You did something gentle for yourself. That matters.</p>
     <button class="btn btn-full" style="max-width:280px; margin:0 auto;" onclick="goTo('welcome')">Return home</button>
   </div>
@@ -1265,7 +1264,7 @@ const ROUTINES = {
     steps: [
       { text: "Before the day asks anything of you — let's set a gentle baseline.", hold: 6 },
       { text: "Place your middle fingers on the center of your forehead. The third eye point. Rest them there. Let the warmth wake your mind softly — no rush.", hold: 30 },
-      { text: "Slide to your temples. Slow, gentle circles. Clearing the sleep, clearing the mental fog. The day can wait.", hold: 25 },
+      { text: "Slide to your temples. Slow, gentle circles. Clearing the sleep, clearing the mental fog.", hold: 25 },
       { text: "Move to the base of your skull. Press the two hollows gently with your thumbs. The vagus nerve gateway — this sets your nervous system to calm before the day's demands arrive.", hold: 30 },
       { text: "Now your hands. Thumb into the center of your palm. Hold. The solar plexus point — your anchor for whatever today brings.", hold: 25 },
       { text: "Press the web between thumb and index finger firmly. This clears morning fog and prepares you for focus.", hold: 20 },
@@ -1696,7 +1695,7 @@ function completeRoutine() {
     "Your hands carried something gentle today. That matters more than you know.",
     "The calm you feel is your own. Your hands just helped you find it.",
     "Notice how your body feels right now. This is what your hands can do.",
-    "Well done. The quiet you found is real, and it is yours.",
+    "The quiet you feel right now is real, and it is yours.",
     "Your body knows how to settle. You just gave it the right touch."
   ];
   document.getElementById('complete-message').textContent = messages[Math.floor(Math.random() * messages.length)];
