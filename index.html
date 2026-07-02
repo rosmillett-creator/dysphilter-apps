@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2a2e28">
+<title>Enef Car — Calm, wherever you are</title>
+<style>
+  /* ════════════════════════════════════════════════════════════════
+     Enef Car — Grounding Touch for Sacred Moments
+     © Rosalind Millett / DysPhilter™ 2026
+     Cornish for "soul friend" — companion reflexology for self-regulation and co-regulation
+     ════════════════════════════════════════════════════════════════ */
+
+  :root {
+    --bg: #2a2e28;
+    --bg-soft: #333832;
+    --card: #383e37;
+    --sage: #8B9B87;
+    --sage-light: #B5C5AD;
+    --sage-dark: #6B7B67;
+    --amber: #C9B88E;
+    --amber-soft: #d4c19a;
+    --cream: #F5F0E8;
+    --text: #e0dcd2;
+    --muted: #9a948a;
+    --border: #444a43;
+    --glow: rgba(139, 155, 135, 0.18);
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: -apple-system, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+    transition: background 2s ease;
+  }
+
+  /* ── Screens ── */
+  .screen { display: none; min-height: 100vh; padding: 24px 20px; animation: fadeIn 0.8s ease; }
+  .screen.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.15); opacity: 1; } }
+  @keyframes softPulse { 0%, 100% { box-shadow: 0 0 20px 0 rgba(139,155,135,0.12); } 50% { box-shadow: 0 0 40px 8px rgba(139,155,135,0.28); } }
+  @keyframes drift { 0% { transform: translate(0, 0); } 50% { transform: translate(2px, -3px); } 100% { transform: translate(0, 0); } }
+
+  /* ── Welcome Screen ── */
+  .welcome-logo {
+    text-align: center;
+    margin: 40px 0 16px;
+  }
+  .welcome-logo h1 {
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    color: var(--sage-light);
+  }
+  .welcome-logo p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.03em;
+  }
+  .welcome-subtitle {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--sage-light);
+    margin: 20px 0 32px;
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* ── Pathway Cards ── */
+  .pathway-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .pathway-card:active { transform: scale(0.98); }
+  .pathway-card:hover { border-color: var(--sage); box-shadow: 0 0 30px var(--glow); }
+  .pathway-card h2 { font-size: 1.15rem; font-weight: 400; color: var(--cream); margin-bottom: 6px; }
+  .pathway-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+  .pathway-card .glyph { font-size: 1.6rem; margin-bottom: 12px; opacity: 0.7; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-block;
+    background: var(--sage);
+    color: var(--cream);
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.02em;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-full { display: block; width: 100%; text-align: center; }
+
+  /* ── Back button ── */
+  .back-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 0.85rem;
+    padding: 8px 0;
+    margin-bottom: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .back-btn:active { color: var(--sage-light); }
+
+  /* ── Area selector ── */
+  .area-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .area-tile {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+  }
+  .area-tile:active { transform: scale(0.97); }
+  .area-tile.selected { border-color: var(--sage); background: var(--bg-soft); box-shadow: 0 0 20px var(--glow); }
+  .area-tile .area-glyph { font-size: 2rem; margin-bottom: 8px; opacity: 0.6; }
+  .area-tile h3 { font-size: 0.95rem; font-weight: 400; color: var(--cream); }
+  .area-tile p { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+
+  /* ── Comfort Dial ── */
+  .dial-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin: 20px 0;
+  }
+  .dial-section label { font-size: 0.9rem; color: var(--sage-light); display: block; margin-bottom: 12px; }
+  .dial {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--sage-dark), var(--sage-light));
+    outline: none;
+    margin: 8px 0;
+  }
+  .dial::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--cream);
+    box-shadow: 0 0 12px rgba(245,240,232,0.3);
+    cursor: pointer;
+  }
+  .dial-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--muted); }
+
+  /* ── Check-in ── */
+  .check-in { margin: 20px 0; }
+  .check-in h3 { font-size: 1rem; font-weight: 400; color: var(--cream); margin-bottom: 16px; text-align: center; }
+  .emoji-grid { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .emoji-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    width: 64px; height: 64px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  .emoji-btn:active { transform: scale(0.92); }
+  .emoji-btn.selected { border-color: var(--sage); background: var(--bg-soft); box-shadow: 0 0 16px var(--glow); }
+
+  /* ── Routine Player ── */
+  .routine-header { text-align: center; margin-bottom: 24px; }
+  .routine-header h2 { font-size: 1.2rem; font-weight: 400; color: var(--cream); }
+  .routine-header p { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+
+  .step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0;
+  }
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: all 0.3s ease;
+  }
+  .step-dot.active { background: var(--sage-light); box-shadow: 0 0 8px var(--sage-light); }
+  .step-dot.done { background: var(--sage); }
+
+  .glow-circle {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139,155,135,0.22), transparent 70%);
+    margin: 32px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: breathe 4s ease-in-out infinite;
+  }
+  .glow-circle.holding { animation: breathe 6s ease-in-out infinite; }
+  .glow-circle-inner {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--sage-light), var(--sage-dark));
+    opacity: 0.7;
+  }
+
+  .whisper-text {
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--cream);
+    max-width: 380px;
+    margin: 0 auto 24px;
+    min-height: 80px;
+    padding: 0 8px;
+  }
+  .whisper-text .highlight { color: var(--sage-light); font-weight: 500; }
+
+  .timer-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 16px auto;
+    max-width: 300px;
+    overflow: hidden;
+  }
+  .timer-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage), var(--sage-light));
+    width: 0%;
+    transition: width 0.1s linear;
+    border-radius: 2px;
+  }
+
+  .routine-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  /* ── Companion Mode ── */
+  .companion-toggle {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .companion-toggle.active { border-color: var(--sage); }
+  .companion-toggle .label { font-size: 0.9rem; color: var(--text); }
+  .companion-toggle .label p { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .toggle-switch {
+    width: 44px; height: 24px;
+    border-radius: 12px;
+    background: var(--border);
+    position: relative;
+    transition: background 0.3s ease;
+    flex-shrink: 0;
+  }
+  .toggle-switch.on { background: var(--sage); }
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--cream);
+    top: 2px; left: 2px;
+    transition: transform 0.3s ease;
+  }
+  .toggle-switch.on::after { transform: translateX(20px); }
+
+  /* ─– Settings row ── */
+  .settings-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row label { font-size: 0.85rem; color: var(--text); }
+
+  /* ── Voice controls ── */
+  .voice-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .voice-section h3 { font-size: 0.9rem; font-weight: 400; color: var(--sage-light); margin-bottom: 12px; }
+
+  /* ── Symptom selector ── */
+  .symptom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .symptom-tile {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .symptom-tile:active { transform: scale(0.97); }
+  .symptom-tile.selected { border-color: var(--amber); box-shadow: 0 0 16px rgba(139,155,135,0.18); }
+  .symptom-tile .sym-glyph { font-size: 1.4rem; margin-bottom: 6px; opacity: 0.6; }
+  .symptom-tile h4 { font-size: 0.85rem; font-weight: 400; color: var(--cream); }
+
+  /* ── Routine list ── */
+  .routine-list-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .routine-list-item:active { transform: scale(0.98); }
+  .routine-list-item:hover { border-color: var(--sage); }
+  .routine-list-item h3 { font-size: 1rem; font-weight: 400; color: var(--cream); margin-bottom: 4px; }
+  .routine-list-item p { font-size: 0.8rem; color: var(--muted); }
+  .routine-list-item .meta { display: flex; gap: 12px; margin-top: 8px; font-size: 0.75rem; color: var(--sage); }
+
+  /* ── Breathing visual ── */
+  .breath-circle {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(122,139,118,0.3), transparent 70%);
+    margin: 40px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 4s ease-in-out;
+  }
+  .breath-circle.inhale { transform: scale(1.3); }
+  .breath-circle.exhale { transform: scale(0.85); }
+  .breath-text { font-size: 0.85rem; color: var(--sage-light); text-align: center; }
+
+  /* ── Complete screen ── */
+  .complete-screen { text-align: center; padding-top: 60px; }
+  .complete-screen .complete-glyph { font-size: 2.5rem; margin-bottom: 16px; opacity: 0.5; }
+  .complete-screen h2 { font-size: 1.3rem; font-weight: 300; color: var(--sage-light); margin-bottom: 8px; }
+  .complete-screen p { font-size: 0.9rem; color: var(--muted); max-width: 320px; margin: 0 auto 24px; }
+
+  /* ── Emergency shortcut ── */
+  .emergency-btn {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--sage-dark);
+    border: 2px solid var(--sage);
+    color: var(--cream);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    z-index: 100;
+    transition: all 0.3s ease;
+  }
+  .emergency-btn:active { transform: scale(0.9); }
+
+  /* ── Bottom nav ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--bg-soft);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0 12px;
+    z-index: 50;
+  }
+  .nav-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 0.72rem;
+    padding: 4px 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .nav-btn.active { color: var(--sage-light); }
+  .nav-btn .nav-glyph { font-size: 1.1rem; opacity: 0.7; }
+
+  /* ── Spacer for bottom nav ── */
+  .nav-spacer { height: 60px; }
+
+  /* ── Favourites ── */
+  .fav-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .fav-card h4 { font-size: 0.9rem; font-weight: 400; color: var(--cream); }
+  .fav-card p { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+  /* ── Section title ── */
+  .section-title {
+    font-size: 0.8rem;
+    color: var(--sage);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 24px 0 12px;
+    font-weight: 500;
+  }
+
+  /* ── Preferences ── */
+  .pref-group { margin-bottom: 16px; }
+  .pref-group > label { font-size: 0.85rem; color: var(--text); display: block; margin-bottom: 6px; }
+  .pref-buttons { display: flex; gap: 8px; }
+  .pref-btn {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  .pref-btn.selected { border-color: var(--sage); color: var(--cream); background: var(--bg-soft); }
+
+  /* ── Responsive ── */
+  @media (max-width: 380px) {
+    .welcome-logo h1 { font-size: 1.7rem; }
+    .whisper-text { font-size: 0.95rem; }
+    .area-grid, .symptom-grid { gap: 8px; }
+  }
+
+  /* ── Treatment Awareness Guide ── */
+  .awareness-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 14px;
+    transition: all 0.3s ease;
+  }
+  .awareness-card .awareness-icon {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    opacity: 0.7;
+  }
+  .awareness-card h3 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .awareness-card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .awareness-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .awareness-check:last-child { border-bottom: none; }
+  .awareness-check:active { opacity: 0.6; }
+  .awareness-check .check-box {
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: transparent;
+  }
+  .awareness-check.checked .check-box {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: var(--cream);
+  }
+  .awareness-check .check-content {
+    flex: 1;
+  }
+  .awareness-check .check-content h4 {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .awareness-check .check-content p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .awareness-check.checked .check-content h4 {
+    color: var(--sage-light);
+  }
+  .awareness-intro {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .awareness-intro h2 {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--sage-light);
+    margin-bottom: 10px;
+  }
+  .awareness-intro p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: WELCOME / HOME
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-logo">
+    <h1>Enef Car</h1>
+    <p>Calm, wherever you are</p>
+  </div>
+  <p class="welcome-subtitle">Welcome. Let's find some quiet together.</p>
+
+  <p style="font-size:0.8rem; color:var(--muted); text-align:center; margin:0 16px 24px; line-height:1.6;">
+    On a train. In a waiting room. At someone's bedside. Before school, after work, in the middle of the night. For yourself, for someone you love, for a child learning to calm their own body, or for a child showing you how to do the same. Wherever you are, your hands already know what to do.
+  </p>
+
+  <div class="pathway-card" onclick="goTo('comfort')">
+    <div class="glyph">🤲</div>
+    <h2>I Need Comfort</h2>
+    <p>Gentle, affirming touch. No goal, no fix, no pressure. Just hold.</p>
+  </div>
+
+  <div class="pathway-card" onclick="goTo('relief')">
+    <div class="glyph">✨</div>
+    <h2>I Need Relief</h2>
+    <p>Soothe something specific — headache, anxiety, sleep, tension. Tap where it hurts.</p>
+  </div>
+
+  <div class="pathway-card" onclick="goTo('presence')">
+    <div class="glyph">🌙</div>
+    <h2>Presence</h2>
+    <p>A deeply hushed space for bedside or quiet moments. Minimal light. Maximum calm.</p>
+  </div>
+  <div class="pathway-card" onclick="goTo('awareness')">
+    <div class="glyph">🌿</div>
+    <h2>Caring for Another</h2>
+    <p>Before giving treatment to someone else — a gentle awareness guide for your hands, breath, and presence.</p>
+  </div>
+
+
+  <div class="section-title">Where you are right now</div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;">
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('commute')">
+      <h3 style="font-size:0.9rem;">On the move</h3>
+      <p style="font-size:0.75rem;">Train, bus, car, plane — discreet, hands only</p>
+      <div class="meta"><span>~3 min</span> <span>Hands</span></div>
+    </div>
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('waiting')">
+      <h3 style="font-size:0.9rem;">Waiting</h3>
+      <p style="font-size:0.75rem;">Appointment, queue, results — settle the nerves</p>
+      <div class="meta"><span>~2 min</span> <span>Hands + Ears</span></div>
+    </div>
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('morning')">
+      <h3 style="font-size:0.9rem;">Morning calm</h3>
+      <p style="font-size:0.75rem;">Before the day begins — gentle, grounding</p>
+      <div class="meta"><span>~4 min</span> <span>Face + Hands</span></div>
+    </div>
+    <div class="routine-list-item" style="padding:14px;" onclick="startRoutine('school-regulation')">
+      <h3 style="font-size:0.9rem;">School or work</h3>
+      <p style="font-size:0.75rem;">Regulation before or during — hands and ears only</p>
+      <div class="meta"><span>~2 min</span> <span>Discreet</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">Longer routines</div>
+
+  <div class="routine-list-item" onclick="startRoutine('bedtime')">
+    <h3>Bedtime Wind-Down</h3>
+    <p>Five gentle finger holds to prepare for sleep</p>
+    <div class="meta"><span>~5 min</span> <span>Hands</span> <span>Voice guided</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('three-step')">
+    <h3>Daily 3-Step Reset</h3>
+    <p>Three points to calm your nervous system anytime</p>
+    <div class="meta"><span>~2 min</span> <span>Hands + Ears</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('headache')">
+    <h3>Headache & Tension Relief</h3>
+    <p>Face, head, and hand points for headache comfort</p>
+    <div class="meta"><span>~4 min</span> <span>Face + Head + Hands</span></div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: COMFORT PATHWAY
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-comfort" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>I Need Comfort</h2>
+    <p>Choose where you'd like to rest your hands</p>
+  </div>
+
+  <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin:16px 0; font-size:0.8rem; color:var(--muted); line-height:1.6;">
+    Hands and ears sit closest to the brain — the nerve pathways are shorter, so the signal travels faster and the effect feels more immediate. Face and head are equally close. These four areas are the heart of Enef Car.
+  </div>
+
+  <div class="area-grid">
+    <div class="area-tile" onclick="selectComfortArea('hands')">
+      <div class="area-glyph">🖐</div>
+      <h3>Hands</h3>
+      <p>Center of palm, thumb web, fingertips</p>
+    </div>
+    <div class="area-tile" onclick="selectComfortArea('ears')">
+      <div class="area-glyph">👂</div>
+      <h3>Ears</h3>
+      <p>Ear lobe, outer rim, inner bowl</p>
+    </div>
+    <div class="area-tile" onclick="selectComfortArea('face')">
+      <div class="area-glyph">😌</div>
+      <h3>Face</h3>
+      <p>Forehead, temples, jaw</p>
+    </div>
+    <div class="area-tile" onclick="selectComfortArea('head')">
+      <div class="area-glyph">🧠</div>
+      <h3>Head & Scalp</h3>
+      <p>Crown, base of skull, behind ears</p>
+    </div>
+  </div>
+
+
+  <div class="dial-section">
+    <label>The Comfort Dial</label>
+    <input type="range" class="dial" id="comfort-dial" min="0" max="3" value="1" step="1">
+    <div class="dial-labels">
+      <span>Feather-light</span>
+      <span>Gentle</span>
+      <span>Warm</span>
+      <span>Grounding</span>
+    </div>
+  </div>
+
+  <div class="companion-toggle" onclick="toggleCompanion()">
+    <div class="label">
+      Companion Mode
+      <p>Together — side by side, sharing calm with a child, a parent, a sibling, or chosen family</p>
+    </div>
+    <div class="toggle-switch" id="companion-switch"></div>
+  </div>
+
+  <button class="btn btn-full" onclick="startComfortRoutine()">Begin</button>
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: RELIEF PATHWAY
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-relief" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>I Need Relief</h2>
+    <p>What would you like to soothe?</p>
+  </div>
+
+  <div class="symptom-grid">
+    <div class="symptom-tile" onclick="selectSymptom('anxiety')">
+      <div class="sym-glyph">🌊</div>
+      <h4>Anxiety & worry</h4>
+    </div>
+    <div class="symptom-tile" onclick="selectSymptom('sleep')">
+      <div class="sym-glyph">😴</div>
+      <h4>Sleep & rest</h4>
+    </div>
+    <div class="symptom-tile" onclick="selectSymptom('headache')">
+      <div class="sym-glyph">💫</div>
+      <h4>Headache & tension</h4>
+    </div>
+    <div class="symptom-tile" onclick="selectSymptom('focus')">
+      <div class="sym-glyph">🎯</div>
+      <h4>Focus & clarity</h4>
+    </div>
+    <div class="symptom-tile" onclick="selectSymptom('digestion')">
+      <div class="sym-glyph">🌿</div>
+      <h4>Digestion & stomach</h4>
+    </div>
+    <div class="symptom-tile" onclick="selectSymptom('sinus')">
+      <div class="sym-glyph">💨</div>
+      <h4>Sinus & congestion</h4>
+    </div>
+  </div>
+
+  <div class="companion-toggle" onclick="toggleCompanion()">
+    <div class="label">
+      Companion Mode
+      <p>Together — side by side, sharing calm with a child, a parent, a sibling, or chosen family</p>
+    </div>
+    <div class="toggle-switch" id="companion-switch-relief"></div>
+  </div>
+
+  <button class="btn btn-full" onclick="startReliefRoutine()">Show me where</button>
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: PRESENCE PATHWAY
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-presence" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>Presence</h2>
+    <p>A quiet space. For you, or for someone you are with.</p>
+  </div>
+
+  <p class="welcome-subtitle">Take a slow breath. Your presence is the greatest gift.</p>
+
+  <p style="font-size:0.78rem; color:var(--muted); text-align:center; margin:0 16px 28px; line-height:1.6;">
+    This pathway was born in hospital rooms and beside beds. It is for the moments when there is nothing to fix — only someone to sit with. Whether that is a child, a partner, a parent, or a friend who is ill. Your hands and your quiet presence are enough.
+  </p>
+
+  <div class="routine-list-item" onclick="startRoutine('carer-grounding')">
+    <h3>Before You Enter</h3>
+    <p>A 60-second grounding moment for carers — breathe before you step in</p>
+    <div class="meta"><span>~1 min</span> <span>Breathing only</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('bedside-hold')">
+    <h3>Bedside Hold</h3>
+    <p>Three gentle hand holds — palm nest, thumb rest, quiet presence</p>
+    <div class="meta"><span>~6 min</span> <span>Hands</span> <span>Low light</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('ear-lobe-hold')">
+    <h3>Soft Lobe Hold</h3>
+    <p>Gently holding the earlobe — stimulates the vagus nerve for deep calm</p>
+    <div class="meta"><span>~3 min</span> <span>Ears</span> <span>Very gentle</span></div>
+  </div>
+
+  <div class="routine-list-item" onclick="startRoutine('breathing-anchor')">
+    <h3>Breathing Together</h3>
+    <p>A visual breathing guide at six breaths per minute — sync and settle</p>
+    <div class="meta"><span>Open-ended</span> <span>No timer</span></div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: TREATMENT AWARENESS GUIDE
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-awareness" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+
+  <div class="awareness-intro">
+    <h2>Before You Begin</h2>
+    <p>When you are giving treatment to someone else, what you carry with you becomes part of their experience. This is a gentle guide to help you create a calm, considerate space for the person you are treating.</p>
+  </div>
+
+  <div class="awareness-card">
+    <div class="awareness-icon">🤲</div>
+    <h3>Your Hands</h3>
+    <p>Wash your hands before you begin. If you have hand cream, a light, unscented one is best. Your hands are the bridge between you and the person you are treating — make sure that bridge is clean and warm.</p>
+  </div>
+
+  <div class="awareness-card">
+    <div class="awareness-icon">💨</div>
+    <h3>Your Breath</h3>
+    <p>Be aware of your breath. Coffee, food, smoking — these are things the person you are treating may notice when you are close to them. If you can, brush your teeth or have a mint before you begin. You do not need to say anything about it. Just be aware.</p>
+  </div>
+
+  <div class="awareness-card">
+    <div class="awareness-icon">📍</div>
+    <h3>Your Proximity</h3>
+    <p>Do not lean over someone when you are giving them a treatment. Work from the side where you can. If they are in a hospital bed, respect the space around the bed. If they are lying down or sitting in a chair, position yourself so they can see you without straining. You want to be close enough to reach them comfortably, but not so close that your presence feels heavy.</p>
+  </div>
+
+  <div class="awareness-card">
+    <div class="awareness-icon">👃</div>
+    <h3>Your Scent</h3>
+    <p>Be aware of body odour and strong perfumes. The person you are treating may be sensitive to smells, especially if they are unwell, in pain, or going through treatment. A neutral, clean presence is the most considerate choice. If you smoke, a quick wash and change of top can make a real difference.</p>
+  </div>
+
+  <div class="awareness-card">
+    <div class="awareness-icon">🪑</div>
+    <h3>Their Space</h3>
+    <p>Whether they are in a hospital bed, lying on a sofa, or sitting in a chair — their space is theirs. Ask before you adjust pillows, move a table, or change anything around them. If they are in a hospital, be aware of wires, monitors, and medical equipment. Work around their world, not through it.</p>
+  </div>
+
+  <div class="awareness-card">
+    <div class="awareness-icon">🌙</div>
+    <h3>Your Presence</h3>
+    <p>Calm is something you carry, not something you perform. Before you start, take a breath. Settle yourself. The person you are treating will feel whether you are rushed or grounded. Your state becomes part of their experience. A few seconds of quiet before you begin is not wasted time — it is the most important part.</p>
+  </div>
+
+  <div class="section-title" style="margin-top:24px;">A quick check before you start</div>
+
+  <div class="awareness-card" id="awareness-checklist">
+    <div class="awareness-check" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-content">
+        <h4>I have washed my hands</h4>
+        <p>Clean, warm hands ready to give care</p>
+      </div>
+    </div>
+    <div class="awareness-check" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-content">
+        <h4>I have checked my breath</h4>
+        <p>Brushed teeth, mint, or just noted it</p>
+      </div>
+    </div>
+    <div class="awareness-check" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-content">
+        <h4>I am not leaning over them</h4>
+        <p>Working from the side, respecting their space</p>
+      </div>
+    </div>
+    <div class="awareness-check" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-content">
+        <h4>I have checked my scent</h4>
+        <p>No strong perfumes, clean clothing, neutral presence</p>
+      </div>
+    </div>
+    <div class="awareness-check" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-content">
+        <h4>I have asked about their space</h4>
+        <p>Pillows, equipment, comfort — nothing moved without asking</p>
+      </div>
+    </div>
+    <div class="awareness-check" onclick="toggleCheck(this)">
+      <div class="check-box">✓</div>
+      <div class="check-content">
+        <h4>I have taken a breath and settled myself</h4>
+        <p>Grounded, unhurried, present</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin:24px 0;">
+    <button class="btn btn-full" style="max-width:300px;" onclick="goTo('presence')">I am ready — show me the routines</button>
+  </div>
+  <p style="text-align:center; font-size:0.78rem; color:var(--muted); margin-bottom:16px;">You can come back to this guide any time.</p>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: ROUTINE PLAYER
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-routine" class="screen">
+  <button class="back-btn" onclick="exitRoutine()">← Back</button>
+  <div class="routine-header">
+    <h2 id="routine-title">Routine</h2>
+    <p id="routine-area">Hands</p>
+  </div>
+
+  <!-- Before check-in (companion mode) -->
+  <div id="before-checkin" class="check-in" style="display:none;">
+    <h3>How are you feeling right now?</h3>
+    <p style="text-align:center; font-size:0.8rem; color:var(--muted); margin-bottom:12px;">No scores. Just a gentle pause to notice.</p>
+    <div class="emoji-grid">
+      <button class="emoji-btn" onclick="selectCheckIn('before','😣')">😣</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','😟')">😟</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','😐')">😐</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','🙂')">🙂</button>
+      <button class="emoji-btn" onclick="selectCheckIn('before','😌')">😌</button>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn" onclick="proceedFromCheckIn('before')">Continue when ready</button>
+    </div>
+  </div>
+
+  <!-- Step player -->
+  <div id="step-player" style="display:none;">
+    <div class="step-indicator" id="step-dots"></div>
+    <div class="glow-circle" id="glow-circle">
+      <div class="glow-circle-inner"></div>
+    </div>
+    <p class="whisper-text" id="whisper-text"></p>
+    <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+    <div class="routine-controls">
+      <button class="btn-secondary btn" onclick="prevStep()">← Back</button>
+      <button class="btn-secondary btn" onclick="pauseRoutine()" id="pause-btn">Pause</button>
+      <button class="btn" onclick="nextStep()" id="next-btn">Next →</button>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn-secondary btn" style="font-size:0.8rem;" onclick="toggleVoice()" id="voice-btn">🔊 Voice on</button>
+    </div>
+  </div>
+
+  <!-- After check-in (companion mode) -->
+  <div id="after-checkin" class="check-in" style="display:none;">
+    <h3>How do you feel now?</h3>
+    <p style="text-align:center; font-size:0.8rem; color:var(--muted); margin-bottom:12px;">Notice any shift, however small.</p>
+    <div class="emoji-grid">
+      <button class="emoji-btn" onclick="selectCheckIn('after','😣')">😣</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','😟')">😟</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','😐')">😐</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','🙂')">🙂</button>
+      <button class="emoji-btn" onclick="selectCheckIn('after','😌')">😌</button>
+    </div>
+    <div style="text-align:center; margin-top:16px;">
+      <button class="btn" onclick="completeRoutine()">Finish</button>
+    </div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: COMPLETE
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-complete" class="screen">
+  <div class="complete-screen">
+    <div class="complete-glyph">🌙</div>
+    <h2>You did that</h2>
+    <p id="complete-message">Your progress is saved. You can come back whenever you are ready.</p>
+    <button class="btn btn-full" style="max-width:280px; margin:0 auto;" onclick="goTo('welcome')">Return home</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: BREATHING ANCHOR
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-breathing" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>Breathing Together</h2>
+    <p>Follow the circle. No timer. No goal. Just breath.</p>
+  </div>
+  <div class="breath-circle" id="breath-circle">
+    <div class="breath-text" id="breath-text">Breathe in...</div>
+  </div>
+  <div style="text-align:center;">
+    <button class="btn-secondary btn" onclick="stopBreathing()">Finish when ready</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCREEN: SETTINGS
+     ════════════════════════════════════════════════════════════════ -->
+<div id="screen-settings" class="screen">
+  <button class="back-btn" onclick="goTo('welcome')">← Back</button>
+  <div class="routine-header">
+    <h2>Settings</h2>
+    <p>Make this space yours</p>
+  </div>
+
+  <div class="voice-section">
+    <h3>Voice Guidance</h3>
+    <div class="pref-group">
+      <label>Voice readout</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setVoicePref('on', this)">On</button>
+        <button class="pref-btn" onclick="setVoicePref('off', this)">Off</button>
+      </div>
+    </div>
+    <div class="pref-group">
+      <label>Speed</label>
+      <div class="pref-buttons">
+        <button class="pref-btn" onclick="setVoiceSpeed(0.7, this)">Slow</button>
+        <button class="pref-btn selected" onclick="setVoiceSpeed(0.85, this)">Gentle</button>
+        <button class="pref-btn" onclick="setVoiceSpeed(1.0, this)">Normal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="voice-section">
+    <h3>Sensory Profile</h3>
+    <div class="pref-group">
+      <label>Stimulation level</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setSensory('low', this)">Low stimulation</button>
+        <button class="pref-btn" onclick="setSensory('high', this)">Gentle stimulation</button>
+      </div>
+    </div>
+    <div class="pref-group">
+      <label>Screen brightness</label>
+      <input type="range" class="dial" id="brightness-dial" min="0" max="3" value="1" step="1" oninput="setBrightness(this.value)">
+      <div class="dial-labels">
+        <span>Very dim</span><span>Dim</span><span>Soft</span><span>Gentle</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="voice-section">
+    <h3>About Enef Car</h3>
+    <p style="font-size:0.8rem; color:var(--muted); line-height:1.6;">
+      Enef Car means "soul friend" in Cornish (Kernewek). It is the sister of the Irish phrase Anam Cara — a companion who walks beside you at the level of the soul.<br><br>
+      This app does not diagnose, treat, or fix. It helps you offer steady, calming presence through your own hands.<br><br>
+      Hands, ears, face, and head are the heart of Enef Car — these areas are closest to the brain, so the calming signal travels fast and the effect is immediate. These four areas cover everything you need, for yourself or for someone you are caring for.<br><br>
+      Enef Car is for wherever you are: on a train, on a bus, in a car, on a plane. In a waiting room. At a desk. In a lesson. At someone's bedside in hospital or hospice. Before school, before work, before sleep. In the middle of the night when sleep won't come.<br><br>
+      It is for a person soothing their own anxiety, a parent sharing calm with their child, a child teaching a parent or sibling, a carer holding someone's hands in a hospital room, a friend sitting beside someone who is ill. It can be used alone or together. It can teach anyone — at any age — that their own hands are a tool for calm. A child can learn it, and a child can teach it. The skill lasts a lifetime.<br><br>
+      No data collected. No account needed. Everything stays on your device.<br><br>
+      © Rosalind Millett / DysPhilter™ 2026
+    </p>
+  </div>
+
+  <div class="voice-section">
+    <h3 style="font-size:0.9rem; font-weight:400; color:var(--sage-light); margin-bottom:16px;">Install on your phone</h3>
+    <p style="font-size:0.82rem; color:var(--muted); line-height:1.6; margin-bottom:14px;">
+      This app works as a web app — no app store needed. Install it on your phone and it runs full screen like a native app.
+    </p>
+    <div style="padding:12px 0; border-bottom:1px solid var(--border);">
+      <h4 style="font-size:0.85rem; font-weight:400; color:var(--text); margin-bottom:6px;">iPhone (Safari)</h4>
+      <p style="font-size:0.78rem; color:var(--muted); line-height:1.6;">Open this page in Safari. Tap the Share button (square with arrow). Scroll down and tap "Add to Home Screen." Tap Add. It will appear on your home screen and run full screen.</p>
+    </div>
+    <div style="padding:12px 0;">
+      <h4 style="font-size:0.85rem; font-weight:400; color:var(--text); margin-bottom:6px;">Android (Chrome)</h4>
+      <p style="font-size:0.78rem; color:var(--muted); line-height:1.6;">Open this page in Chrome. Tap the three dots menu (top right). Tap "Add to Home screen" or "Install app." Tap Install. It will appear on your home screen and run full screen.</p>
+    </div>
+  </div>
+
+  <div class="nav-spacer"></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     EMERGENCY SHORTCUT BUTTON
+     ════════════════════════════════════════════════════════════════ -->
+<button class="emergency-btn" onclick="startRoutine('emergency')" title="Emergency calm">🌿</button>
+
+<!-- ════════════════════════════════════════════════════════════════
+     BOTTOM NAV
+     ════════════════════════════════════════════════════════════════ -->
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="goTo('welcome')">
+    <span class="nav-glyph">🏠</span> Home
+  </button>
+  <button class="nav-btn" onclick="goTo('settings')">
+    <span class="nav-glyph">⚙</span> Settings
+  </button>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// ENEF CAR — APP LOGIC
+// © Rosalind Millett / DysPhilter™ 2026
+// ════════════════════════════════════════════════════════════════
+
+// ── State ──
+let state = {
+  screen: 'welcome',
+  companionMode: false,
+  voiceOn: true,
+  voiceSpeed: 0.85,
+  sensory: 'low',
+  brightness: 1,
+  comfortDial: 1,
+  selectedArea: null,
+  selectedSymptom: null,
+  currentRoutine: null,
+  currentStep: 0,
+  routineTimer: null,
+  routinePaused: false,
+  checkInBefore: null,
+  checkInAfter: null,
+  preferences: {}
+};
+
+// Load preferences from localStorage
+try {
+  const saved = localStorage.getItem('enefcar_prefs');
+  if (saved) state.preferences = JSON.parse(saved);
+  if (state.preferences.voiceOn !== undefined) state.voiceOn = state.preferences.voiceOn;
+  if (state.preferences.voiceSpeed) state.voiceSpeed = state.preferences.voiceSpeed;
+  if (state.preferences.sensory) state.sensory = state.preferences.sensory;
+  if (state.preferences.brightness) state.brightness = state.preferences.brightness;
+} catch(e) {}
+
+function savePrefs() {
+  try {
+    localStorage.setItem('enefcar_prefs', JSON.stringify({
+      voiceOn: state.voiceOn,
+      voiceSpeed: state.voiceSpeed,
+      sensory: state.sensory,
+      brightness: state.brightness
+    }));
+  } catch(e) {}
+}
+
+// ── Awareness checklist toggle ──
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+}
+
+// ── Screen navigation ──
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const screen = document.getElementById('screen-' + screenId);
+  if (screen) {
+    screen.classList.add('active');
+    state.screen = screenId;
+    window.scrollTo(0, 0);
+  }
+  // Stop any speech
+  if (window.speechSynthesis) speechSynthesis.cancel();
+}
+
+// ── Companion mode toggle ──
+function toggleCompanion() {
+  state.companionMode = !state.companionMode;
+  document.querySelectorAll('#companion-switch, #companion-switch-relief').forEach(el => {
+    el.classList.toggle('on', state.companionMode);
+  });
+  document.querySelectorAll('.companion-toggle').forEach(el => {
+    el.classList.toggle('active', state.companionMode);
+  });
+}
+
+// ── Comfort area selection ──
+function selectComfortArea(area) {
+  state.selectedArea = area;
+  document.querySelectorAll('#screen-comfort .area-tile').forEach(t => t.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+// ── Symptom selection ──
+function selectSymptom(symptom) {
+  state.selectedSymptom = symptom;
+  document.querySelectorAll('#screen-relief .symptom-tile').forEach(t => t.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+// ── Start comfort routine ──
+function startComfortRoutine() {
+  if (!state.selectedArea) {
+    startRoutine('comfort-hands');
+    return;
+  }
+  startRoutine('comfort-' + state.selectedArea);
+}
+
+// ── Start relief routine ──
+function startReliefRoutine() {
+  if (!state.selectedSymptom) return;
+  startRoutine('symptom-' + state.selectedSymptom);
+}
+
+// ════════════════════════════════════════════════════════════════
+// ROUTINE DEFINITIONS
+// ════════════════════════════════════════════════════════════════
+const ROUTINES = {
+  // ── ON THE MOVE (commute — discreet, hands only) ──
+  'commute': {
+    title: 'On the Move',
+    area: 'Discreet — hands only, no one will notice',
+    companion: false,
+    steps: [
+      { text: "Wherever you are right now — train, bus, car, plane — your hands are right there. No one needs to see what you're doing.", hold: 5 },
+      { text: "Rest one hand in your lap. With the other, press your thumb into the center of your palm. Gentle, slow pressure. The solar plexus point — your nervous system's calm switch. Nobody can see this.", hold: 30 },
+      { text: "Move to the web between your thumb and index finger. Squeeze gently. This releases the tension you're holding from the journey — the noise, the crowd, the waiting.", hold: 25 },
+      { text: "Each fingertip, one by one. Gentle squeeze. Thumb, index, middle, ring, little. The fingertips connect to the head — clearing mental clutter from travel.", hold: 20 },
+      { text: "Switch hands. Same sequence. Center of palm, thumb web, fingertips. Slow and quiet.", hold: 30 },
+      { text: "Rest both hands in your lap. You are here, you are moving, and you are calm.", hold: 10 }
+    ]
+  },
+
+  // ── WAITING (appointment, queue, results) ──
+  'waiting': {
+    title: 'While You Wait',
+    area: 'Hands + ears — settle the nerves',
+    companion: false,
+    steps: [
+      { text: "Waiting is hard. The body tenses, the mind races. Let's use this moment instead of enduring it.", hold: 5 },
+      { text: "Thumb into the center of your opposite palm. Hold. The solar plexus point — it tells your nervous system that you are safe, even here.", hold: 25 },
+      { text: "Now your ears. If you can do this discreetly — one hand to your ear, pinch the earlobe gently. The vagus nerve lives here. Breathe out slowly.", hold: 25 },
+      { text: "If touching your ears feels too visible: stay with your hands. Press each fingertip gently. The fingertips map to the head — they help when thoughts are racing.", hold: 20 },
+      { text: "Rest your hands. Whatever you are waiting for, you can handle it. This moment does not control you.", hold: 10 }
+    ]
+  },
+
+  // ── MORNING CALM ──
+  'morning': {
+    title: 'Morning Calm',
+    area: 'Face + hands — before the day begins',
+    companion: false,
+    steps: [
+      { text: "Before the day asks anything of you — let's set a gentle baseline.", hold: 6 },
+      { text: "Place your middle fingers on the center of your forehead. The third eye point. Rest them there. Let the warmth wake your mind softly — no rush.", hold: 30 },
+      { text: "Slide to your temples. Slow, gentle circles. Clearing the sleep, clearing the mental fog. The day can wait.", hold: 25 },
+      { text: "Move to the base of your skull. Press the two hollows gently with your thumbs. The vagus nerve gateway — this sets your nervous system to calm before the day's demands arrive.", hold: 30 },
+      { text: "Now your hands. Thumb into the center of your palm. Hold. The solar plexus point — your anchor for whatever today brings.", hold: 25 },
+      { text: "Press the web between thumb and index finger firmly. This clears morning fog and prepares you for focus.", hold: 20 },
+      { text: "Rest your hands. Take one slow breath. You are ready — not braced, not rushed. Ready.", hold: 10 }
+    ]
+  },
+
+  // ── SCHOOL OR WORK REGULATION ──
+  'school-regulation': {
+    title: 'School or Work Regulation',
+    area: 'Discreet — hands and ears only',
+    companion: false,
+    steps: [
+      { text: "This is for the moments between things — before a lesson, before a meeting, during a break. No one will know you're doing it.", hold: 5 },
+      { text: "Hands under the desk or on your lap. Thumb into the center of your palm. Hold gently. The calm switch — it works even in a busy room.", hold: 25 },
+      { text: "Press the web between your thumb and index finger. Firm but gentle. This clears mental fog and brings focus.", hold: 20 },
+      { text: "If you can: one hand to your ear, pinch the earlobe softly. The vagus nerve point — it brings the nervous system down without anyone noticing.", hold: 20 },
+      { text: "If ears feel too much right now: stay with your hands. Fingertip squeezes, one by one. The fingertips connect to the head and help with overwhelm.", hold: 15 },
+      { text: "Rest your hands. You are regulated. You can do the next thing.", hold: 8 }
+    ]
+  },
+
+  // ── BEDTIME WIND-DOWN (hands) ──
+  'bedtime': {
+    title: 'Bedtime Wind-Down',
+    area: 'Hands — five gentle finger holds',
+    companion: true,
+    steps: [
+      { text: "Find a comfortable position. Let your hands rest softly in your lap or on your chest.", hold: 8 },
+      { text: "Bring your attention to your right hand. With your left thumb, gently press into the center of your right palm. That's the solar plexus point — your nervous system's quiet switch.", hold: 30 },
+      { text: "Now slide your thumb to the base of your right thumb finger. The fleshy web between thumb and index finger. Press gently and hold. This releases tension held in the neck and shoulders.", hold: 30 },
+      { text: "Move to your index fingertip. Press gently. The fingertips connect to the head and sinuses.", hold: 20 },
+      { text: "Now the middle fingertip. Press softly. This point connects to the eyes — let any visual strain from the day release.", hold: 20 },
+      { text: "Switch to your left hand now. Left thumb pressing into the center of your left palm. Same solar plexus point. Hold and breathe.", hold: 30 },
+      { text: "Left thumb to the web between thumb and index finger. Gentle pressure. Neck and shoulders releasing.", hold: 30 },
+      { text: "Left fingertips — index, then middle. Gentle presses. Head and eyes settling.", hold: 20 },
+      { text: "Rest both hands now. Palms facing up or down — whatever feels most natural. Notice the quiet. Your body is ready for sleep.", hold: 15 }
+    ]
+  },
+
+  // ── DAILY 3-STEP RESET ──
+  'three-step': {
+    title: 'Daily 3-Step Reset',
+    area: 'Hands + Ears',
+    companion: false,
+    steps: [
+      { text: "Let's take three small steps together. No rush.", hold: 5 },
+      { text: "Step one. Press your thumb into the center of your opposite palm. The solar plexus point. Hold gently. This is your nervous system's calm switch.", hold: 30 },
+      { text: "Step two. Bring your fingers to your ears. Gently pinch the very bottom of your earlobe between thumb and index finger. Hold softly. The earlobe connects to the vagus nerve — your body's deep calm pathway.", hold: 30 },
+      { text: "Step three. Place both hands over your face, fingertips on your forehead. The center of your forehead is your third eye point. Let the warmth of your hands rest there. No pressing needed.", hold: 30 },
+      { text: "Lower your hands. Take one more slow breath. That's the reset done.", hold: 10 }
+    ]
+  },
+
+  // ── EMERGENCY 2-FINGER SHORTCUT ──
+  'emergency': {
+    title: 'Emergency Calm',
+    area: 'Two fingers. Thirty seconds.',
+    companion: false,
+    steps: [
+      { text: "Right now, right here. Two fingers. One hand.", hold: 3 },
+      { text: "Press your thumb into the center of your opposite palm. Hold firmly but gently. Breathe out slowly.", hold: 20 },
+      { text: "Now bring your other hand to your ear. Pinch the earlobe softly. Hold. Keep breathing.", hold: 20 },
+      { text: "You are here. You are safe. This moment will pass.", hold: 10 }
+    ]
+  },
+
+  // ── HEADACHE & TENSION ──
+  'headache': {
+    title: 'Headache & Tension Relief',
+    area: 'Face + Head + Hands',
+    companion: true,
+    steps: [
+      { text: "Find a quiet moment. Let your shoulders drop away from your ears.", hold: 5 },
+      { text: "Place your middle fingers on the center of your forehead — between your eyebrows, slightly above. This is the third eye point. Press gently and hold. Feel the warmth spread.", hold: 30 },
+      { text: "Slide your fingers to your temples. Small circles, very gentle pressure. The temples hold tension from clenching and screen time.", hold: 25 },
+      { text: "Move to the base of your skull — where your head meets your neck. Use your thumbs to press the two hollow points on either side. This releases the vagus nerve and deep head tension.", hold: 30 },
+      { text: "Now your hands. Press the web between your thumb and index finger firmly. This is a powerful headache point in hand reflexology.", hold: 25 },
+      { text: "Finally, rest your palms over your eyes. Let the darkness and warmth soothe any remaining strain.", hold: 20 },
+      { text: "Slowly lower your hands. Notice if the tension has shifted.", hold: 8 }
+    ]
+  },
+
+  // ── COMFORT: HANDS ──
+  'comfort-hands': {
+    title: 'Comfort — Hands',
+    area: 'Gentle holds for the hands',
+    companion: true,
+    steps: [
+      { text: "Let your hands rest in your lap. Take a breath to arrive.", hold: 8 },
+      { text: "With your left thumb, find the center of your right palm. Don't press — just rest your thumb there. Let the warmth of your hand do the work.", hold: 40 },
+      { text: "Slowly trace a small circle with your thumb. Soft, slow, like stirring warm water. The center of the palm is the solar plexus — the emotional calm switch.", hold: 40 },
+      { text: "Now slide to the web between your thumb and index finger. Hold gently. This is where the body stores tension from thinking too much.", hold: 35 },
+      { text: "Move to each fingertip on your right hand — thumb, index, middle, ring, little. Gentle squeeze on each. The fingertips connect to the head.", hold: 30 },
+      { text: "Switch hands. Right thumb on the center of your left palm. Rest and hold. Same calm point, other side.", hold: 40 },
+      { text: "Trace the same slow circle. Soft and warm. No rush.", hold: 35 },
+      { text: "Left hand fingertips — gentle squeezes. Thumb to little finger.", hold: 30 },
+      { text: "Rest both hands now. Palms up. Feel the quiet that comes after gentle touch.", hold: 15 }
+    ]
+  },
+
+  // ── COMFORT: EARS ──
+  'comfort-ears': {
+    title: 'Comfort — Ears',
+    area: 'Gentle holds for the ears',
+    companion: true,
+    steps: [
+      { text: "Sit comfortably. Let your shoulders soften.", hold: 6 },
+      { text: "Bring your hands to your ears. Gently pinch the earlobe between thumb and index finger. The earlobe connects to the head and brain — and to the vagus nerve.", hold: 30 },
+      { text: "Slowly slide your fingers up the outer rim of the ear. From lobe to top. Gentle pressure. The outer rim maps the spine.", hold: 30 },
+      { text: "At the top of the ear, find the fold where the cartilage curves in. This is the calming point — sometimes called Shen Men, the spirit gate. Press gently and hold.", hold: 35 },
+      { text: "Now find the bowl of the ear — the concha. Press your index finger into the bowl. This point connects to the internal organs and the breath.", hold: 30 },
+      { text: "Gently fold the entire ear forward, covering the opening. Hold for a moment. Then release. This gives the whole ear a gentle reset.", hold: 15 },
+      { text: "Switch to the other ear. Lobe hold, gentle.", hold: 25 },
+      { text: "Outer rim slide — lobe to top.", hold: 25 },
+      { text: "Calming point at the fold. Hold softly.", hold: 25 },
+      { text: "Bowl of the ear. Gentle press.", hold: 25 },
+      { text: "Fold and release. Let both ears settle. Notice the stillness.", hold: 12 }
+    ]
+  },
+
+  // ── COMFORT: FACE ──
+  'comfort-face': {
+    title: 'Comfort — Face',
+    area: 'Gentle holds for the face',
+    companion: true,
+    steps: [
+      { text: "Find a still moment. Let your jaw soften — teeth apart, lips together.", hold: 8 },
+      { text: "Place your middle fingers on the center of your forehead. Between the eyebrows, slightly above. The third eye point. Don't press — just rest. Let the warmth sink in.", hold: 35 },
+      { text: "Slide your fingers to your temples. Slow, gentle circles. The temples hold the tension of the day — thinking, worrying, clenching.", hold: 30 },
+      { text: "Move to the space just under your cheekbones, beside your nostrils. Press gently upward. This releases sinus pressure and facial tension.", hold: 25 },
+      { text: "Find the hollow at the corner of your jaw — where it hinges. Press gently with your index fingers. This is the TMJ point — jaw tension releases here.", hold: 30 },
+      { text: "Slide your fingers to the base of your nose, at the top of your upper lip. Gentle pressure. This clears the sinuses and grounds the mind.", hold: 20 },
+      { text: "Rest your palms over your entire face. Cup them gently — like holding something precious. Let the warmth settle.", hold: 20 },
+      { text: "Lower your hands slowly. Notice the softness in your face.", hold: 10 }
+    ]
+  },
+
+  // ── COMFORT: HEAD & SCALP ──
+  'comfort-head': {
+    title: 'Comfort — Head & Scalp',
+    area: 'Gentle holds for the head',
+    companion: true,
+    steps: [
+      { text: "Sit or lie down. Let your head feel heavy and supported.", hold: 8 },
+      { text: "Place both hands on the crown of your head. Palms flat, fingers spread. Don't press — just rest your hands there. The crown is the body's reset point.", hold: 35 },
+      { text: "Slowly slide your hands backward, fingers through your hair if you have it. Gentle pressure from the crown to the back of the head.", hold: 25 },
+      { text: "Find the base of your skull — where your head meets your neck. Use your thumbs to press the two hollows on either side. This is the vagus nerve gateway — deep calm lives here.", hold: 35 },
+      { text: "Move your hands behind your ears. The soft hollows behind the earlobes. Gentle pressure. This is the lymphatic drainage point — releases tension and fluid.", hold: 25 },
+      { text: "Return to the crown. Hands resting. Imagine a slow wave of calm moving from the top of your head down through your whole body.", hold: 25 },
+      { text: "Slowly lift your hands away. Sit with the quiet.", hold: 12 }
+    ]
+  },
+
