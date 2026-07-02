@@ -62,6 +62,46 @@
     --glow: rgba(168, 155, 200, 0.28);
   }
 
+  /* Dark sage theme — deep sage green, not brown */
+  :root.dark-sage {
+    --bg: #1A1F18;
+    --bg-soft: #212620;
+    --card: #262C24;
+    --sage: #8FAF84;
+    --sage-light: #A8C89C;
+    --sage-dark: #6B8B60;
+    --violet: #9888B8;
+    --violet-light: #B8A8D4;
+    --violet-dark: #7A6A9A;
+    --amber: #B8C5A8;
+    --amber-soft: #C8D4B8;
+    --cream: #D4DCC8;
+    --text: #C8D0BC;
+    --muted: #8A9480;
+    --border: #36402E;
+    --glow: rgba(152, 136, 184, 0.15);
+  }
+
+  /* Dark sage + high stim */
+  :root.dark-sage.high-stim {
+    --bg: #1A1F18;
+    --bg-soft: #212620;
+    --card: #262C24;
+    --sage: #7BC468;
+    --sage-light: #9EE088;
+    --sage-dark: #5BA248;
+    --violet: #A898CC;
+    --violet-light: #C8B8E4;
+    --violet-dark: #8878A8;
+    --amber: #D4A537;
+    --amber-soft: #E8C568;
+    --cream: #D4DCC8;
+    --text: #C8D0BC;
+    --muted: #8A9480;
+    --border: #3A4A30;
+    --glow: rgba(168, 152, 204, 0.25);
+  }
+
   /* Light + High stimulation — brighter violet on cream */
     /* Dark + High stimulation — brighter violet on dark */
     /* High stim animated progress dots */
@@ -692,6 +732,13 @@
     <div class="pref-group">
     </div>
     <div class="pref-group">
+      <label>Theme</label>
+      <div class="pref-buttons">
+        <button class="pref-btn selected" onclick="setTheme('light', this)">Light</button>
+        <button class="pref-btn" onclick="setTheme('dark-sage', this)">Dark sage</button>
+      </div>
+    </div>
+    <div class="pref-group">
       <label>Stimulation level</label>
       <div class="pref-buttons">
         <button class="pref-btn selected" onclick="setSensory('low', this)">Low stimulation</button>
@@ -780,9 +827,9 @@ try {
     if (p.voiceSpeed) state.voiceSpeed = p.voiceSpeed;
     if (p.sensory) state.sensory = p.sensory;
     if (p.brightness) state.brightness = p.brightness;
-
-  if (p.haptics) state.haptics = p.haptics;
-  if (p.sensory === 'high') setSensory('high');
+    if (p.haptics) state.haptics = p.haptics;
+    if (p.theme) setTheme(p.theme);
+    if (p.sensory === 'high') setSensory('high');
   }
 } catch(e) {}
 
@@ -1334,6 +1381,17 @@ function setVoiceSpeed(speed, btn) {
   state.voiceSpeed = speed;
   btn.parentElement.querySelectorAll('.pref-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
+  savePrefs();
+}
+
+function setTheme(theme, btn) {
+  state.theme = theme;
+  if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
+  if (theme === 'dark-sage') {
+    document.documentElement.classList.add('dark-sage');
+  } else {
+    document.documentElement.classList.remove('dark-sage');
+  }
   savePrefs();
 }
 
