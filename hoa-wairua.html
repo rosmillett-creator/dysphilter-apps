@@ -571,7 +571,6 @@
 <div id="screen-complete" class="screen">
   <div class="complete-screen">
     <div class="complete-glyph">🌙</div>
-    <p id="complete-message">The energy moved. You can feel it if you sit quietly for a moment.</p>
     <button class="btn btn-full" style="max-width:280px; margin:0 auto;" onclick="goTo('welcome')">Return home</button>
   </div>
 </div>
@@ -765,7 +764,7 @@ const ROUTINES = {
       { text: "Position eight — the sacral. Move down to your lower belly, below your navel. This is the creative and emotional center. Hands resting gently. Let any held emotions soften.", hold: 60 },
       { text: "Position nine — the root. Place your hands on your lower belly, over the pelvic area. This is your foundation — safety, grounding, belonging. Let your hands tell your body that you are here and you are secure.", hold: 60 },
       { text: "Now rest your hands in your lap. Palms up. Feel the energy still moving. You do not need to do anything more. It will continue to flow on its own.", hold: 20 },
-      { text: "Take one more slow breath. Notice how your body feels different from when we started. That difference is the energy. It was always there. You just allowed it to move.", hold: 15 }
+      { text: "Take one more slow breath. Notice how your body feels different from when we started. That difference is the energy. It was always there.", hold: 15 }
     ]
   },
 
@@ -795,7 +794,7 @@ const ROUTINES = {
       { text: "Move both hands to the center of your chest — over your heart. This is the heart center. Whatever you are carrying — grief, love, fear, longing — let it rest here in your hands.", hold: 80 },
       { text: "If emotion comes, let it. This is the heart releasing. Your hands are holding space for it. You do not need to understand it. Just let it move.", hold: 45 },
       { text: "Broaden your hand placement — cover more of your chest. Let the warmth spread. The heart center connects to every part of you.", hold: 30 },
-      { text: "Lower your hands slowly. Notice the openness in your chest. You held space for yourself. That matters.", hold: 12 }
+      { text: "Lower your hands slowly. Notice the openness in your chest.", hold: 12 }
     ]
   },
 
@@ -867,7 +866,7 @@ const ROUTINES = {
       { text: "Hands under the desk or on your lap. One hand on your heart, one on your belly. Or just both hands in your lap, palms up. Whatever feels possible right now.", hold: 25 },
       { text: "Breathe. The energy is flowing, even if you can't feel it. Your hands are conduits. Your intention is the switch.", hold: 20 },
       { text: "If overwhelm is rising: both hands on your belly. The center. Grounding. Let the feeling settle there instead of in your head.", hold: 20 },
-      { text: "Rest your hands. You are regulated enough for the next thing. Not perfect. Enough.", hold: 8 }
+      { text: "Rest your hands. You are ready for the next thing.", hold: 8 }
     ]
   },
 
@@ -913,7 +912,7 @@ const ROUTINES = {
       { text: "Move to their heart center — the center of their chest. Hover or rest very lightly. This helps them feel safe. Your presence here says: you are loved, you are held.", hold: 60 },
       { text: "Move to their belly — the center. Children hold anxiety in their bellies. A warm hand here, resting gently, tells their body to let go.", hold: 50 },
       { text: "If they are still and settled: stay at the belly. Or move back to the crown. Follow what feels right. There is no wrong way.", hold: 40 },
-      { text: "Slowly lift your hands away. Sit with them for a moment. You just taught them that hands carry calm. They will remember this.", hold: 12 }
+      { text: "Slowly lift your hands away. Sit with them for a moment.", hold: 12 }
     ]
   },
 
@@ -979,7 +978,7 @@ const ROUTINES = {
       { text: "Move to their heart center. Hands hovering above the center of their chest. Hold. Your steady presence here supports their heart — literally. Breathe slowly.", hold: 90 },
       { text: "Move to their belly — the center. Hovering. The root of safety. Your hands here say: you are secure. You are held.", hold: 60 },
       { text: "If they are asleep or unconscious: stay at the crown. Energy flows regardless of whether they are awake. Your presence is received.", hold: 60 },
-      { text: "When you are ready, slowly lift your hands away. Sit with the quiet. You offered something that cannot be measured or named. It was received.", hold: 15 }
+      { text: "When you are ready, slowly lift your hands away. Sit with the quiet.", hold: 15 }
     ]
   },
 
@@ -1156,14 +1155,6 @@ function finishSteps() {
 
 function completeRoutine() {
   goTo('complete');
-  const messages = [
-    "The energy moved. You can feel it if you sit quietly for a moment.",
-    "Notice how your body feels right now.",
-    "You allowed the energy to flow. That is all Reiki ever asks.",
-    "The calm you feel is your own. The energy just helped you find it.",
-    "Your hands carried something gentle today. That matters more than you know."
-  ];
-  document.getElementById('complete-message').textContent = messages[Math.floor(Math.random() * messages.length)];
 }
 
 function selectCheckIn(phase, emoji) {
