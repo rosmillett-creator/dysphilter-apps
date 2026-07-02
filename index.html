@@ -1002,7 +1002,6 @@
 <div id="screen-complete" class="screen">
   <div class="complete-screen">
     <div class="complete-glyph">🌙</div>
-    <p id="complete-message">You did something gentle for yourself. That matters.</p>
     <button class="btn btn-full" style="max-width:280px; margin:0 auto;" onclick="goTo('welcome')">Return home</button>
   </div>
 </div>
@@ -1692,14 +1691,6 @@ function finishSteps() {
 
 function completeRoutine() {
   goTo('complete');
-  var messages = [
-    "Your hands carried something gentle today. That matters more than you know.",
-    "The calm you feel is your own. Your hands just helped you find it.",
-    "Notice how your body feels right now. This is what your hands can do.",
-    "The quiet you feel right now is real, and it is yours.",
-    "Your body knows how to settle. You just gave it the right touch."
-  ];
-  document.getElementById('complete-message').textContent = messages[Math.floor(Math.random() * messages.length)];
 }
 
 function selectCheckIn(phase, emoji) {
