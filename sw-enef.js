@@ -1,4 +1,4 @@
-const CACHE_NAME = 'enefcar-v1';
+const CACHE_NAME = 'enefcar-v2';
 const ASSETS = [
   '/',
   '/index.html',
