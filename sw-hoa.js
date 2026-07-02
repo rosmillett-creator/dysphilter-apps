@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hoawairua-v1';
+const CACHE_NAME = 'hoawairua-v2';
 const ASSETS = [
   '/hoa-wairua.html',
   '/icons/hoa-192.png',
