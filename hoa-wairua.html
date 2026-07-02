@@ -102,6 +102,35 @@
     --glow: rgba(168, 152, 204, 0.25);
   }
 
+  /* Mid sage theme — soft medium muted violet */
+  :root.mid-sage {
+    --bg: #8E8499;
+    --bg-soft: #827890;
+    --card: #9890A4;
+    --violet: #3A2E48;
+    --violet-light: #5A4D6E;
+    --violet-dark: #241B30;
+    --text: #1F1A28;
+    --muted: #332E3D;
+    --border: #7B728A;
+    --glow: rgba(58, 46, 72, 0.15);
+  }
+
+  /* Mid sage + high stim */
+  :root.mid-sage.high-stim {
+    --bg: #8E8499;
+    --bg-soft: #827890;
+    --card: #9890A4;
+    --violet: #6B3D8F;
+    --violet-light: #8B5DBF;
+    --violet-dark: #4A1D6F;
+    --text: #1F1A28;
+    --muted: #332E3D;
+    --border: #6B6280;
+    --glow: rgba(139, 93, 191, 0.25);
+  }
+
+
   /* Light + High stimulation — brighter violet on cream */
     /* Dark + High stimulation — brighter violet on dark */
     /* High stim animated progress dots */
@@ -735,6 +764,7 @@
       <label>Theme</label>
       <div class="pref-buttons">
         <button class="pref-btn selected" onclick="setTheme('light', this)">Light</button>
+        <button class="pref-btn" onclick="setTheme('mid-sage', this)">Mid sage</button>
         <button class="pref-btn" onclick="setTheme('dark-sage', this)">Dark sage</button>
       </div>
     </div>
@@ -1387,11 +1417,9 @@ function setVoiceSpeed(speed, btn) {
 function setTheme(theme, btn) {
   state.theme = theme;
   if (btn) { btn.parentElement.querySelectorAll('.pref-btn').forEach(function(b) { b.classList.remove('selected'); }); btn.classList.add('selected'); }
-  if (theme === 'dark-sage') {
-    document.documentElement.classList.add('dark-sage');
-  } else {
-    document.documentElement.classList.remove('dark-sage');
-  }
+  document.documentElement.classList.remove('dark-sage', 'mid-sage');
+  if (theme === 'dark-sage') document.documentElement.classList.add('dark-sage');
+  else if (theme === 'mid-sage') document.documentElement.classList.add('mid-sage');
   savePrefs();
 }
 
