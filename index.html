@@ -25,14 +25,14 @@
     --bg: #F2EFE8;
     --bg-soft: #EAE6DD;
     --card: #F8F5F0;
-    --sage: #7A8B73;
+    --sage: #6B7C64;
     --sage-light: #A5B89E;
-    --sage-dark: #5C6B56;
+    --sage-dark: #4C5B46;
     --amber: #7A8B73;
     --amber-soft: #A5B89E;
     --cream: #3D4239;
-    --text: #3D4239;
-    --muted: #5A5F55;
+    --text: #2A2E26;
+    --muted: #4A4F45;
     --border: #D8D4C9;
     --glow: rgba(122, 139, 115, 0.12);
     --radius: 18px;
@@ -49,8 +49,8 @@
     --amber: #D4A537;
     --amber-soft: #E8C568;
     --cream: #2A3D24;
-    --text: #2A3D24;
-    --muted: #4A5D44;
+    --text: #1A2D14;
+    --muted: #3A4D34;
     --border: #B8D4AC;
     --glow: rgba(91, 138, 78, 0.22);
   }
@@ -1263,7 +1263,7 @@ try {
   if (state.preferences.voiceOn !== undefined) state.voiceOn = state.preferences.voiceOn;
   if (state.preferences.voiceSpeed) state.voiceSpeed = state.preferences.voiceSpeed;
   if (state.preferences.sensory) state.sensory = state.preferences.sensory;
-  if (state.preferences.theme) { state.theme = state.preferences.theme; setTheme(state.preferences.theme); }
+
   if (state.preferences.haptics) state.haptics = state.preferences.haptics;
   if (state.preferences.sensory === 'high') setSensory('high');
   if (state.preferences.brightness) state.brightness = state.preferences.brightness;
@@ -1380,7 +1380,7 @@ const ROUTINES = {
     companion: false,
     steps: [
       { text: "Before the day asks anything of you — let's set a gentle baseline.", hold: 6 },
-      { text: "Place your middle fingers on the center of your forehead. The third eye point. Rest them there. Let the warmth wake your mind softly — no rush.", hold: 30 },
+      { text: "Place your middle fingers on the center of your forehead. The third eye point. Rest them there. Let the warmth wake your mind softly.", hold: 30 },
       { text: "Slide to your temples. Slow, gentle circles. Clearing the sleep, clearing the mental fog.", hold: 25 },
       { text: "Move to the base of your skull. Press the two hollows gently with your thumbs. The vagus nerve gateway — this sets your nervous system to calm before the day's demands arrive.", hold: 30 },
       { text: "Now your hands. Thumb into the center of your palm. Hold. The solar plexus point — your anchor for whatever today brings.", hold: 25 },
